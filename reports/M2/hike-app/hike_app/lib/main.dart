@@ -1,50 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:hiking_app/HikesScreen.dart';
+import 'package:hiking_app/ProfileScreen.dart';
+import 'package:hiking_app/MatchesScreen.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: HikeCard(),
+    home: HomePage(),
+    debugShowCheckedModeBanner: false,
   ));
 }
 
-class HikeCard extends StatefulWidget {
+// class HikingApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: HomePage(),
+//     );
+//   }
+// }
+
+class HomePage extends StatefulWidget {
+
   @override
-  _HikeCardState createState() => _HikeCardState();
+  State<StatefulWidget> createState() {
+    return _HomePageState();
+  }
 }
 
-class _HikeCardState extends State<HikeCard> {
+class _HomePageState extends State<HomePage> {
+  int _currentIndex = 1;
+  final List<Widget> _children = [
+    ProfileScreen(),
+    HikesScreen(),
+    MatchesScreen(),
+  ];
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[300],
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          // First child: picture
-          Expanded(
-            flex: 9,
-            child: Image(image: NetworkImage(
-                'https://cdn-assets.alltrails.com/uploads/photo/image/23957167/large_04c8a06a56c3a328db71d851edb1bfb7.jpg'
-            )),
-          ),
-        ],
-      ),
+      body: _children[_currentIndex], // new
       bottomNavigationBar: BottomNavigationBar(
+        onTap: onTabTapped, // new
+        currentIndex: _currentIndex, // new
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.person,
+            color: Color(0xFFf2c82e)),
             label: 'Profile',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.terrain),
+            icon: Icon(Icons.terrain,
+            color: Colors.green),
             label: 'Hikes',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: 'My List',
+            icon: Icon(Icons.favorite_sharp,
+            color: Colors.pink,),
+            label: 'Matches',
           ),
         ],
-      ),
+      ),// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
