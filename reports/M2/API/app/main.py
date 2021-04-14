@@ -9,9 +9,6 @@ api = Api(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db.init_app(app)
 
-with app.app_context():
-	db.create_all()
-
 #Returns a hike and associated information, given a hike-id
 api.add_resource(Hike, "/hike/<string:hike_id>")
 #Returns a random hike
