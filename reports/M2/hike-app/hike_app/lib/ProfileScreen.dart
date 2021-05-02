@@ -11,75 +11,78 @@ class ProfileScreen extends StatelessWidget{
           child: Container(color: Colors.black.withOpacity(0.8)),
           clipper: getClipper(),
         ),
-        Positioned(
-            width: MediaQuery.of(context).size.width,
-            top: MediaQuery.of(context).size.height / 4,
-            child: Column(
-              children: <Widget>[
-                Container(
-                    width: 150.0,
-                    height: 150.0,
-                    decoration: BoxDecoration(
-                        color: Colors.red,
-                        //TODO: Make profile picture customizable
-                        image: DecorationImage(
-                            image: NetworkImage(
-                                'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg'),
-                            fit: BoxFit.cover),
-                        borderRadius: BorderRadius.all(Radius.circular(75.0)),
-                        boxShadow: [
-                          BoxShadow(blurRadius: 7.0, color: Colors.black)
-                        ])),
-                SizedBox(height: 30),
-                Text(
-                  'Tom Cruise',
-                  style: TextStyle(
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Montserrat'),
-                ),
-                SizedBox(height: 25.0),
-                Container(
-                    height: 30.0,
-                    width: 95.0,
-                    child: Material(
-                      borderRadius: BorderRadius.circular(20.0),
-                      shadowColor: Colors.greenAccent,
-                      color: Colors.green,
-                      elevation: 7.0,
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: Center(
-                          child: Text(
-                            'Edit Name',
-                            style: TextStyle(color: Colors.white, fontFamily: 'Montserrat'),
-                          ),
-                        ),
-                      ),
-                    )),
-                SizedBox(height: 25.0),
-                Container(
-                    height: 30.0,
-                    width: 95.0,
-                    child: Material(
-                      borderRadius: BorderRadius.circular(20.0),
-                      shadowColor: Colors.redAccent,
-                      color: Colors.red,
-                      elevation: 7.0,
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: Center(
-                          child: Text(
-                            'Log out',
-                            style: TextStyle(color: Colors.white, fontFamily: 'Montserrat'),
-                          ),
-                        ),
-                      ),
-                    ))
-              ],
-            ))
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: MediaQuery.of(context).size.height / 10,),
+            Center(
+              child: Column(
+                children: [
+                  Container(
+                      width: 150.0,
+                      height: 150.0,
+                      decoration: BoxDecoration(
+                          color: Colors.red,
+                          //TODO: Make profile picture customizable
+                          image: DecorationImage(
+                              image: NetworkImage(
+                                  'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg'),
+                              fit: BoxFit.cover),
+                          borderRadius: BorderRadius.all(Radius.circular(75.0)),
+                          boxShadow: [
+                            BoxShadow(blurRadius: 7.0, color: Colors.black)
+                          ])),
+                  SizedBox(height: 15),
+                  Text(
+                    'Tom Cruise',
+                    style: TextStyle(
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Montserrat'),
+                  ),
+                  SizedBox(height:15,),
+                ],
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Hike Length:",
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Montserrat'),
+                  ),
+                  // Double ended slider here
+                  Text(
+                    "Elevation Gain:",
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Montserrat'),
+                  ),
+                  Text(
+                    "Difficulty:",
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Montserrat'),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+
       ],
-    ));
+    )
+    );
   }
 }
 
@@ -88,8 +91,8 @@ class getClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     var path = new Path();
 
-    path.lineTo(0.0, size.height / 1.9);
-    path.lineTo(size.width *1.75, 0.0);
+    path.lineTo(0.0, size.height / 3);
+    path.lineTo(size.width *1.85, 0.0);
     path.close();
     return path;
   }
