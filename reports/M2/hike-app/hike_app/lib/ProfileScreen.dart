@@ -171,7 +171,7 @@ class _ProfileSelectorState extends State<ProfileSelector> {
 
 /// A checkbox and label
 class LabelledCheckbox extends StatefulWidget {
-  bool isChecked;
+  bool isChecked; // Need a way to identify status of individual boxes
   final String label;
   double labelSize = 14.0;
 
