@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
+import 'package:hiking_app/main.dart';
 
 class HikesScreen extends StatefulWidget {
   @override
@@ -48,7 +49,8 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
               },
               swipeCompleteCallback:
                   (CardSwipeOrientation orientation, int index) {
-                /// Get orientation & index of swiped card!
+                  /// Get orientation & index of swiped card!
+
               },
             )
           )

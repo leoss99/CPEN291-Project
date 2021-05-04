@@ -207,6 +207,16 @@ class _LabelledCheckboxState extends State<LabelledCheckbox> {
   }
 }
 
+/// Data object for storing selected preferences on profile page
+class ProfileData {
+  RangeValues prefDistance;
+  RangeValues prefElevation;
+  bool prefEasy, prefMod, prefHard;
+  bool tagChildren, tagWheelchair, tagBike, tagDog, tagPicnic;
+  ProfileData({this.prefDistance, this.prefElevation, this.prefEasy, this.prefMod, this.prefHard,
+      this.tagBike, this.tagChildren, this.tagDog, this.tagPicnic, this.tagWheelchair});
+}
+
 
 class getClipper extends CustomClipper<Path> {
   @override
