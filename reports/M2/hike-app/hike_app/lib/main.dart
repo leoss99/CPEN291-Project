@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hiking_app/HikesScreen.dart';
 import 'package:hiking_app/ProfileScreen.dart';
@@ -29,16 +30,40 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+
   int _currentIndex = 1;
-  final List<Widget> _children = [
-    ProfileScreen(),
-    HikesScreen(),
-    MatchesScreen(),
-  ];
+  ProfileData userPreferences;
+
+  ProfileScreen profileScreen;
+  HikesScreen hikesScreen;
+  MatchesScreen matchesScreen;
+  List<Widget> _children;
+  Widget currentPage;
+
+
+  @override
+  void initState() {
+
+    userPreferences = ProfileData();
+
+    profileScreen = ProfileScreen(userPreferences: userPreferences,);
+    hikesScreen = HikesScreen();
+    matchesScreen = MatchesScreen();
+
+    _children = [
+      profileScreen,
+      hikesScreen,
+      matchesScreen
+    ];
+
+    super.initState();
+  }
 
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
+      print(userPreferences.prefDistance.toString());
     });
   }
 

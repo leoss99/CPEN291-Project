@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 
-class ProfileScreen extends StatelessWidget{
+class ProfileScreen extends StatefulWidget{
+  ProfileData userPreferences;
+  ProfileScreen({Key key, this.userPreferences}): super(key: key);
+
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context){
     return new Scaffold(
@@ -47,7 +55,7 @@ class ProfileScreen extends StatelessWidget{
 
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ProfileSelector(),
+              child: ProfileSelector(userPreferences: widget.userPreferences,),
             ),
           ],
         ),
@@ -60,17 +68,22 @@ class ProfileScreen extends StatelessWidget{
 
 /// This stateful widget is for the selector boxes and sliders
 class ProfileSelector extends StatefulWidget {
+  ProfileData userPreferences;
+  ProfileSelector({
+    Key key,
+    this.userPreferences,
+  }) : super(key: key);
+
   @override
   _ProfileSelectorState createState() => _ProfileSelectorState();
 }
 
 class _ProfileSelectorState extends State<ProfileSelector> {
   // Initialize selector sliders
-  RangeValues _currentElevationRange = const RangeValues(0, 1000);
-  RangeValues _currentDistanceRange = const RangeValues(0, 100);
 
   @override
   Widget build(BuildContext context) {
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,17 +96,17 @@ class _ProfileSelectorState extends State<ProfileSelector> {
               fontFamily: 'Montserrat'),
         ),
         RangeSlider(
-          values: _currentDistanceRange,
+          values: widget.userPreferences.prefDistance,
           min: 0,
           max: 100,
           divisions: 20,
           labels: RangeLabels(
-            _currentDistanceRange.start.round().toString() + " km",
-            _currentDistanceRange.end.round().toString() + " km",
+            widget.userPreferences.prefDistance.start.round().toString() + " km",
+            widget.userPreferences.prefDistance.end.round().toString() + " km",
           ),
           onChanged: (RangeValues values) {
             setState(() {
-              _currentDistanceRange = values;
+              widget.userPreferences.prefDistance = values;
             });
           },
         ),
@@ -105,17 +118,17 @@ class _ProfileSelectorState extends State<ProfileSelector> {
               fontFamily: 'Montserrat'),
         ),
         RangeSlider(
-          values: _currentElevationRange,
+          values: widget.userPreferences.prefElevation,
           min: 0,
           max: 1000,
           divisions: 20,
           labels: RangeLabels(
-            _currentElevationRange.start.round().toString() + " m",
-            _currentElevationRange.end.round().toString() + " m",
+            widget.userPreferences.prefElevation.start.round().toString() + " m",
+            widget.userPreferences.prefElevation.end.round().toString() + " m",
           ),
           onChanged: (RangeValues values) {
             setState(() {
-              _currentElevationRange = values;
+              widget.userPreferences.prefElevation = values;
             });
           },
         ),
@@ -130,11 +143,11 @@ class _ProfileSelectorState extends State<ProfileSelector> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            LabelledCheckbox(isChecked: true, label: "Easy",),
+            LabelledCheckbox(isChecked: widget.userPreferences.prefEasy, label: "Easy",),
 
-            LabelledCheckbox(isChecked: true, label: "Moderate",),
+            LabelledCheckbox(isChecked: widget.userPreferences.prefMod, label: "Moderate",),
 
-            LabelledCheckbox(isChecked: true, label: "Hard",),
+            LabelledCheckbox(isChecked: widget.userPreferences.prefHard, label: "Hard",),
           ],
         ),
         Text(
@@ -209,12 +222,17 @@ class _LabelledCheckboxState extends State<LabelledCheckbox> {
 
 /// Data object for storing selected preferences on profile page
 class ProfileData {
+  // For preferences, include results that match any selected value
   RangeValues prefDistance;
   RangeValues prefElevation;
   bool prefEasy, prefMod, prefHard;
+  // For tags, exclude any results that don't match all selected values
+  // TODO: Change tags to a list instead of checkboxes
   bool tagChildren, tagWheelchair, tagBike, tagDog, tagPicnic;
-  ProfileData({this.prefDistance, this.prefElevation, this.prefEasy, this.prefMod, this.prefHard,
-      this.tagBike, this.tagChildren, this.tagDog, this.tagPicnic, this.tagWheelchair});
+
+  ProfileData({this.prefDistance = const RangeValues(0, 100), this.prefElevation = const RangeValues(0, 1000),
+      this.prefEasy = true, this.prefMod = true, this.prefHard = true,
+      this.tagBike = false, this.tagChildren = false, this.tagDog = false, this.tagPicnic = false, this.tagWheelchair = false});
 }
 
 
