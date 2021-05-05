@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class ProfileScreen extends StatefulWidget{
   ProfileData userPreferences;
@@ -140,15 +141,35 @@ class _ProfileSelectorState extends State<ProfileSelector> {
               fontWeight: FontWeight.bold,
               fontFamily: 'Montserrat'),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            LabelledCheckbox(isChecked: widget.userPreferences.prefEasy, label: "Easy",),
-
-            LabelledCheckbox(isChecked: widget.userPreferences.prefMod, label: "Moderate",),
-
-            LabelledCheckbox(isChecked: widget.userPreferences.prefHard, label: "Hard",),
-          ],
+        SizedBox(height: 5,),
+        Center(
+          child: ToggleButtons(
+            constraints: BoxConstraints(minWidth: 100, minHeight: 40),
+            children: <Widget>[
+              Text("Easy"),
+              Text("Moderate"),
+              Text("Hard"),
+            ],
+            isSelected: [
+              widget.userPreferences.prefEasy,
+              widget.userPreferences.prefMod,
+              widget.userPreferences.prefHard
+            ],
+            onPressed: (int index) {
+              setState(() {
+                switch(index) {
+                  case 0:
+                    widget.userPreferences.prefEasy = !widget.userPreferences.prefEasy;
+                    return;
+                  case 1:
+                    widget.userPreferences.prefMod = !widget.userPreferences.prefMod;
+                    return;
+                  default:
+                    widget.userPreferences.prefHard = !widget.userPreferences.prefHard;
+                }
+              });
+            },
+          ),
         ),
         Text(
           "Tags:",

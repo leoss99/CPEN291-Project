@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hiking_app/HikeObject.dart';
 import 'package:hiking_app/HikesScreen.dart';
 import 'package:hiking_app/ProfileScreen.dart';
 import 'package:hiking_app/MatchesScreen.dart';
@@ -34,6 +35,7 @@ class _HomePageState extends State<HomePage> {
 
   int _currentIndex = 1;
   ProfileData userPreferences;
+  List<HikeObject> matchedHikes;
 
   ProfileScreen profileScreen;
   HikesScreen hikesScreen;
@@ -46,10 +48,17 @@ class _HomePageState extends State<HomePage> {
   void initState() {
 
     userPreferences = ProfileData();
+    matchedHikes = [HikeObject(hikeName: 'garibaldi-lake-trail', photoName: 'garibaldi-lake-trail-0',
+        photoURL: 'https://cdn-assets.alltrails.com/uploads/photo/image/23957167/large_04c8a06a56c3a328db71d851edb1bfb7.jpg', rating: 'unrated'),
+      HikeObject(hikeName: 'eagle-bluff-trail', photoName: 'eagle-bluff-trail-0',
+          photoURL: 'https://cdn-assets.alltrails.com/uploads/photo/image/19188231/large_ed307a8a1d3f90ade5f2b58fdf520339.jpg', rating: 'unrated'),
+      HikeObject(hikeName: 'watersprite-lake-summer-route', photoName: 'watersprite-lake-summer-route-0',
+          photoURL: 'https://cdn-assets.alltrails.com/uploads/photo/image/23996582/large_05f2f399322b219c104564781265e1be.jpg', rating: 'unrated')
+    ];
 
     profileScreen = ProfileScreen(userPreferences: userPreferences,);
     hikesScreen = HikesScreen();
-    matchesScreen = MatchesScreen();
+    matchesScreen = MatchesScreen(matches: matchedHikes,);
 
     _children = [
       profileScreen,
@@ -57,13 +66,22 @@ class _HomePageState extends State<HomePage> {
       matchesScreen
     ];
 
+    matchedHikes = [HikeObject(hikeName: 'garibaldi-lake-trail', photoName: 'garibaldi-lake-trail-0',
+      photoURL: 'https://cdn-assets.alltrails.com/uploads/photo/image/23957167/large_04c8a06a56c3a328db71d851edb1bfb7.jpg', rating: 'unrated'),
+      HikeObject(hikeName: 'eagle-bluff-trail', photoName: 'eagle-bluff-trail-0',
+      photoURL: 'https://cdn-assets.alltrails.com/uploads/photo/image/19188231/large_ed307a8a1d3f90ade5f2b58fdf520339.jpg', rating: 'unrated'),
+      HikeObject(hikeName: 'watersprite-lake-summer-route', photoName: 'watersprite-lake-summer-route-0',
+      photoURL: 'https://cdn-assets.alltrails.com/uploads/photo/image/23996582/large_05f2f399322b219c104564781265e1be.jpg', rating: 'unrated')
+    ];
+
+
+
     super.initState();
   }
 
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
-      print(userPreferences.prefDistance.toString());
     });
   }
 

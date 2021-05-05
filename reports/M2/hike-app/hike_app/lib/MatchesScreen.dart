@@ -3,26 +3,19 @@ import 'package:flutter/services.dart';
 import 'package:hiking_app/HikeObject.dart';
 import 'package:hiking_app/main.dart';
 
-class MatchesScreen extends StatelessWidget{
+class MatchesScreen extends StatefulWidget{
   // Hike names and urls come from backend
   List<HikeObject> matches;
-  // Possible useful resource for building lists from API data:
-  // https://www.melvinvivas.com/flutter-listview-example-using-data-from-a-rest-api/
+  MatchesScreen({Key key, this.matches}): super(key: key);
 
-  HikeObject garibaldi = HikeObject(hikeName: 'garibaldi-lake-trail', photoName: 'garibaldi-lake-trail-0',
-      photoURL: 'https://cdn-assets.alltrails.com/uploads/photo/image/23957167/large_04c8a06a56c3a328db71d851edb1bfb7.jpg', rating: 'unrated');
-  HikeObject bluff = HikeObject(hikeName: 'eagle-bluff-trail', photoName: 'eagle-bluff-trail-0',
-      photoURL: 'https://cdn-assets.alltrails.com/uploads/photo/image/19188231/large_ed307a8a1d3f90ade5f2b58fdf520339.jpg', rating: 'unrated');
-  HikeObject watersprite = HikeObject(hikeName: 'watersprite-lake-summer-route', photoName: 'watersprite-lake-summer-route-0',
-      photoURL: 'https://cdn-assets.alltrails.com/uploads/photo/image/23996582/large_05f2f399322b219c104564781265e1be.jpg', rating: 'unrated');
+  @override
+  _MatchesScreenState createState() => _MatchesScreenState();
+}
 
+class _MatchesScreenState extends State<MatchesScreen> {
 
   @override
   Widget build(BuildContext context){
-    // Matches will later be updated by API calls and tinder-card swipes
-    matches.add(garibaldi);
-    matches.add(bluff);
-    matches.add(watersprite);
 
     return Scaffold(
       appBar: AppBar(
@@ -30,20 +23,20 @@ class MatchesScreen extends StatelessWidget{
       ),
       body: ListView.builder(
         padding: EdgeInsets.all(8),
-        itemCount: matches.length,
+        itemCount: widget.matches.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            leading: Image.network(matches[index].photoURL),
-            title: Text(matches[index].parsedName()),
+            leading: Image.network(widget.matches[index].photoURL),
+            title: Text(widget.matches[index].parsedName()),
             onTap: () {
               Navigator.push(context, MaterialPageRoute<void>(
                 builder: (BuildContext context) {
                   return Scaffold(
-                    appBar: AppBar(title: Text(matches[index].parsedName())),
+                    appBar: AppBar(title: Text(widget.matches[index].parsedName())),
                     body: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.network(matches[index].photoURL),
+                        Image.network(widget.matches[index].photoURL),
                         TwoToneText(title: "Distance", content: "10 km",),
                         TwoToneText(title: "Elevation Gain", content: "100 m",),
                         TwoToneText(title: "Difficulty", content: "Moderate",),
@@ -52,7 +45,7 @@ class MatchesScreen extends StatelessWidget{
                           child: RaisedButton(
                             child: Text("View on AllTrails.com"),
                             onPressed: (){
-                              String hikeURL = 'https://www.alltrails.com/trail/canada/british-columbia/'+matches[index].hikeName;
+                              String hikeURL = 'https://www.alltrails.com/trail/canada/british-columbia/' + widget.matches[index].hikeName;
                               print("Button Pressed! Link to hike is: $hikeURL");
                             }
                           ),
