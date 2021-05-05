@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:hiking_app/main.dart';
+import 'package:hiking_app/HikeObject.dart';
 
 class HikesScreen extends StatefulWidget {
+  List<HikeObject> unratedHikes;
+  List<HikeObject> ratedHikes;
+  List<HikeObject> matchedHikes;
+  HikesScreen({Key key, this.unratedHikes, this.ratedHikes, this.matchedHikes}): super(key: key);
+
   @override
   _HikesScreenState createState() => _HikesScreenState();
 }
 class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin{
-  List<String> imagePaths = [
-    "assets/unmatched-hikes/alpha-mountain-east-ridge-route-1.jpg",
-    "assets/unmatched-hikes/alpha-mountain-east-ridge-route-2.jpg",
-    "assets/unmatched-hikes/bladu-pass-and-marriott-basin-trail-0.jpg",
-    "assets/unmatched-hikes/bladu-pass-and-marriott-basin-trail-1.jpg",
-    "assets/unmatched-hikes/bladu-pass-and-marriott-basin-trail-2.jpg",
-    "assets/unmatched-hikes/video-peak-0.jpg",
-    "assets/unmatched-hikes/video-peak-1.jpg",
-    "assets/unmatched-hikes/video-peak-2.jpg",
-  ];
+  // List<String> imagePaths = [
+  //   "assets/unmatched-hikes/alpha-mountain-east-ridge-route-1.jpg",
+  //   "assets/unmatched-hikes/alpha-mountain-east-ridge-route-2.jpg",
+  //   "assets/unmatched-hikes/bladu-pass-and-marriott-basin-trail-0.jpg",
+  //   "assets/unmatched-hikes/bladu-pass-and-marriott-basin-trail-1.jpg",
+  //   "assets/unmatched-hikes/bladu-pass-and-marriott-basin-trail-2.jpg",
+  //   "assets/unmatched-hikes/video-peak-0.jpg",
+  //   "assets/unmatched-hikes/video-peak-1.jpg",
+  //   "assets/unmatched-hikes/video-peak-2.jpg",
+  // ];
 
   @override
   Widget build(BuildContext context){
@@ -27,7 +33,7 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
             height: MediaQuery.of(context).size.height * 0.6,
             child: TinderSwapCard(
               orientation: AmassOrientation.BOTTOM,
-              totalNum: imagePaths.length,
+              totalNum: widget.unratedHikes.length,
               stackNum: 3,
               swipeEdge: 4.0,
               maxWidth: MediaQuery.of(context).size.width * 0.9,
@@ -35,7 +41,7 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
               minWidth: MediaQuery.of(context).size.width * 0.8,
               minHeight: MediaQuery.of(context).size.width * 0.8,
               cardBuilder: (context, index) => Card(
-                child: Image.asset('${imagePaths[index]}'),
+                child: Image.network(widget.unratedHikes[index].photoURL),
               ),
               cardController: controller = CardController(),
               swipeUpdateCallback:
@@ -50,7 +56,10 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
               swipeCompleteCallback:
                   (CardSwipeOrientation orientation, int index) {
                   /// Get orientation & index of swiped card!
-
+                  if (orientation == CardSwipeOrientation.RIGHT) {
+                    // If swiped right, add to matches
+                    widget.matchedHikes.add(widget.unratedHikes[index]);
+                  }
               },
             )
           )

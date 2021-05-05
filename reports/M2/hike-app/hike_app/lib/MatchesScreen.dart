@@ -16,7 +16,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
   @override
   Widget build(BuildContext context){
-
+    //TODO: Check for empty list of hikes. If empty, display special screen saying "no matches"
     return Scaffold(
       appBar: AppBar(
         title: Text("Matches"),
