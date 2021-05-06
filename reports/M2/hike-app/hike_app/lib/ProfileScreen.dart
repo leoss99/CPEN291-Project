@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_tags/flutter_tags.dart';
 
 class ProfileScreen extends StatefulWidget{
   ProfileData userPreferences;
@@ -81,6 +82,7 @@ class ProfileSelector extends StatefulWidget {
 
 class _ProfileSelectorState extends State<ProfileSelector> {
   // Initialize selector sliders
+
 
   @override
   Widget build(BuildContext context) {
@@ -179,24 +181,48 @@ class _ProfileSelectorState extends State<ProfileSelector> {
               fontWeight: FontWeight.bold,
               fontFamily: 'Montserrat'),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            LabelledCheckbox(isChecked: true, label: "Dog-friendly",),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //   children: [
+        //     LabelledCheckbox(isChecked: true, label: "Dog-friendly",),
+        //
+        //     LabelledCheckbox(isChecked: true, label: "Wheelchair Accessible",),
+        //   ],
+        // ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //   children: [
+        //     LabelledCheckbox(isChecked: true, label: "Picnic",),
+        //
+        //     LabelledCheckbox(isChecked: true, label: "Kid-friendly",),
+        //
+        //     LabelledCheckbox(isChecked: true, label: "Bike-friendly",),
+        //   ],
+        // ),
 
-            LabelledCheckbox(isChecked: true, label: "Wheelchair Accessible",),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            LabelledCheckbox(isChecked: true, label: "Picnic",),
+        // Flutter Tags
+        Center(
+          child: Tags(
+            itemCount: widget.userPreferences.tagLabels.length,
+            itemBuilder: (int index) {
+              final item = widget.userPreferences.tagLabels[index];
 
-            LabelledCheckbox(isChecked: true, label: "Kid-friendly",),
-
-            LabelledCheckbox(isChecked: true, label: "Bike-friendly",),
-          ],
-        ),
+              return ItemTags(
+                active: widget.userPreferences.tagSelected[index],
+                elevation: 0,
+                border: Border.all(width: 0),
+                color: Colors.grey[300],
+                activeColor: Colors.lightBlue,
+                index: index,
+                title: item,
+                onPressed: (a) {
+                  print(item);
+                  widget.userPreferences.tagSelected[index] = !widget.userPreferences.tagSelected[index];
+                },
+              );
+            },
+          ),
+        )
       ],
     );
   }
@@ -248,12 +274,27 @@ class ProfileData {
   RangeValues prefElevation;
   bool prefEasy, prefMod, prefHard;
   // For tags, exclude any results that don't match all selected values
-  // TODO: Change tags to a list instead of checkboxes
-  bool tagChildren, tagWheelchair, tagBike, tagDog, tagPicnic;
+  List<bool> tagSelected;
+  List<String> tagLabels;
 
   ProfileData({this.prefDistance = const RangeValues(0, 100), this.prefElevation = const RangeValues(0, 1000),
-      this.prefEasy = true, this.prefMod = true, this.prefHard = true,
-      this.tagBike = false, this.tagChildren = false, this.tagDog = false, this.tagPicnic = false, this.tagWheelchair = false});
+      this.prefEasy = true, this.prefMod = true, this.prefHard = true, this.tagLabels, this.tagSelected}) {
+
+    if (tagLabels == null) {
+      // no tags have been provided, make default list
+      this.tagLabels = [
+        'Bike-friendly', 'Child-friendly', 'Dog-friendly', 'Wheelchair-accessible', 'Picnic'
+      ];
+    }
+
+    if (tagSelected == null) {
+      // Not specified which tags are selected, default set all unselected
+      this.tagSelected = List<bool>.filled(this.tagLabels.length, false);
+    }
+
+    assert(tagSelected.length == tagLabels.length);
+    print(tagLabels);
+  }
 }
 
 
