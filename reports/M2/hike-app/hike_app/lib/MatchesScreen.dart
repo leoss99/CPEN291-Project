@@ -16,7 +16,26 @@ class _MatchesScreenState extends State<MatchesScreen> {
 
   @override
   Widget build(BuildContext context){
-    //TODO: Check for empty list of hikes. If empty, display special screen saying "no matches"
+    //Check for empty list of hikes. If empty, display special screen saying "no matches"
+    if (widget.matches.length == 0) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("Matches"),
+        ),
+        body: Center(
+          child: Text(
+            "No matches yet, keep swiping!",
+            style: TextStyle(
+              fontSize: 16,
+              fontFamily: 'Montserat',
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[700]
+            ),
+          )
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Matches"),
@@ -49,7 +68,18 @@ class _MatchesScreenState extends State<MatchesScreen> {
                               print("Button Pressed! Link to hike is: $hikeURL");
                             }
                           ),
-                        )
+                        ),
+                        Center(
+                          child: RaisedButton(
+                              child: Text("Reject"),
+                              onPressed: (){
+                                setState(() {
+                                  widget.matches.remove(widget.matches[index]);
+                                });
+                                Navigator.pop(context);
+                              }
+                          ),
+                        ),
                       ],
                     )
                   );

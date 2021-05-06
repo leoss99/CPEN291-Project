@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:hiking_app/main.dart';
 import 'package:hiking_app/HikeObject.dart';
+import 'dart:async';
+import 'dart:convert';
 
 class HikesScreen extends StatefulWidget {
   List<HikeObject> unratedHikes;
@@ -12,6 +15,8 @@ class HikesScreen extends StatefulWidget {
   @override
   _HikesScreenState createState() => _HikesScreenState();
 }
+
+
 class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin{
   // List<String> imagePaths = [
   //   "assets/unmatched-hikes/alpha-mountain-east-ridge-route-1.jpg",
@@ -23,6 +28,21 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
   //   "assets/unmatched-hikes/video-peak-1.jpg",
   //   "assets/unmatched-hikes/video-peak-2.jpg",
   // ];
+
+  /// Method for getting hikes from backend
+  void _getHikes(List<HikeObject> unratedHikes) async {
+    final hikeAPIUrl = 'http://mock-json-service.glitch.me/';
+    final response = await http.get(hikeAPIUrl);
+
+    if (response.statusCode == 200) {
+      // If response was successful, parse json object and add hikes to unrated list
+      List jsonResponse = json.decode(response.body);
+      List<HikeObject> newHikes = jsonResponse.map((hike) => HikeObject.fromJson(hike)).toList();
+      unratedHikes.addAll(newHikes);
+    } else {
+      throw Exception('failed to load new hikes from API');
+    }
+  }
 
   @override
   Widget build(BuildContext context){
@@ -57,9 +77,17 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
                   (CardSwipeOrientation orientation, int index) {
                   /// Get orientation & index of swiped card!
                   if (orientation == CardSwipeOrientation.RIGHT) {
-                    // If swiped right, add to matches
+                    // If swiped right, mark as liked and add to matches
+                    widget.unratedHikes[index].rating = 'liked';
                     widget.matchedHikes.add(widget.unratedHikes[index]);
+                  } else {
+                    // Item was swiped left, mark as disliked
+                    widget.unratedHikes[index].rating = 'disliked';
                   }
+                  // In all cases, move the swiped card to the rated list
+                  widget.ratedHikes.add(widget.unratedHikes[index]);
+                  //widget.unratedHikes.remove(widget.unratedHikes[index]);
+                  //TODO: figure out how to remove from the unrated list without breaking things
               },
             )
           )

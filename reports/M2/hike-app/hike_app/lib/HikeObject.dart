@@ -17,6 +17,12 @@ class HikeObject {
   HikeObject({this.hikeName, this.photoName, this.photoURL, this.rating});
 
   //TODO: implement JSON encode and decode
+  HikeObject.fromJson(Map<String,dynamic> json) {
+    this.hikeName = json['hikeName'];
+    this.photoName = json['photoName'];
+    this.photoURL = json['photoURL'];
+    this.rating = "unrated";
+  }
 
   String parsedName() {
     assert(hikeName != null);
