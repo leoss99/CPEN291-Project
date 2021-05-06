@@ -21,6 +21,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
       return Scaffold(
         appBar: AppBar(
           title: Text("Matches"),
+          backgroundColor: Colors.lightGreen[700],
         ),
         body: Center(
           child: Text(
@@ -39,6 +40,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Matches"),
+        backgroundColor: Colors.lightGreen[700],
       ),
       body: ListView.builder(
         padding: EdgeInsets.all(8),
@@ -51,7 +53,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
               Navigator.push(context, MaterialPageRoute<void>(
                 builder: (BuildContext context) {
                   return Scaffold(
-                    appBar: AppBar(title: Text(widget.matches[index].parsedName())),
+                    appBar: AppBar(title: Text(widget.matches[index].parsedName()),backgroundColor: Colors.lightGreen[700],),
                     body: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
