@@ -269,6 +269,12 @@ class _LabelledCheckboxState extends State<LabelledCheckbox> {
 
 /// Data object for storing selected preferences on profile page
 class ProfileData {
+
+  // TODO: When sending preferences to API, put in the form:
+  // {'username', 'distanceMin', 'distanceMax', elevationMin', 'elevationMax', 'easy', 'medium', 'hard'}
+
+  // Username for identifying user, possibly randomly generated uid?
+  String username;
   // For preferences, include results that match any selected value
   RangeValues prefDistance;
   RangeValues prefElevation;
