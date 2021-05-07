@@ -30,6 +30,9 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
   //   "assets/unmatched-hikes/video-peak-1.jpg",
   //   "assets/unmatched-hikes/video-peak-2.jpg",
   // ];
+  Color backgroundColor = Colors.lightGreen[700];
+  double likeOpacity = 0;
+  double dislikeOpacity = 0;
 
   /// Method for getting hikes from backend
   void _getHikes(List<HikeObject> unratedHikes) async {
@@ -55,13 +58,32 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            color: Colors.lightGreen[700],
+            color: backgroundColor,
           ),
           Center(
             child: Icon(
               Icons.terrain_rounded,
               size: 200,
               color: Colors.lightGreen[900],
+            ),
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height * 0.3,
+            width: MediaQuery.of(context).size.width,
+            child: Center(
+              child: Container(
+                height: MediaQuery.of(context).size.height*0.1,
+                width: MediaQuery.of(context).size.height*0.3,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                    top: BorderSide(width: 1, )
+                  )
+                ),
+                child: Text(
+                  "dsds"
+                ),
+              ),
             ),
           ),
           Center(
@@ -108,8 +130,14 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
                   /// Get swiping card's alignment
                   if (align.x < 0) {
                     //Card is LEFT swiping
+                    // setState(() {
+                    //   backgroundColor = Colors.red;
+                    // });
                   } else if (align.x > 0) {
                     //Card is RIGHT swiping
+                    // setState(() {
+                    //   backgroundColor = Colors.blue;
+                    // });
                   }
                 },
                 swipeCompleteCallback:
@@ -123,10 +151,18 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
                       // Item was swiped left, mark as disliked
                       widget.unratedHikes[index].rating = 'disliked';
                     }
-                    // In all cases, move the swiped card to the rated list
-                    widget.ratedHikes.add(widget.unratedHikes[index]);
-                    //widget.unratedHikes.remove(widget.unratedHikes[index]);
-                    //TODO: figure out how to remove from the unrated list without breaking things
+
+                    if (orientation != CardSwipeOrientation.RECOVER) {
+                      // If card was swiped, move the swiped card to the rated list
+                      widget.ratedHikes.add(widget.unratedHikes[index]);
+                      //widget.unratedHikes.remove(widget.unratedHikes[index]);
+                      //TODO: figure out how to remove from the unrated list without breaking things
+                    }
+
+                    // setState(() {
+                    //   backgroundColor = Colors.lightGreen[700];
+                    // });
+
                 },
               )
             )
