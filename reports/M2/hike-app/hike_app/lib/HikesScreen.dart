@@ -67,25 +67,7 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
               color: Colors.lightGreen[900],
             ),
           ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.3,
-            width: MediaQuery.of(context).size.width,
-            child: Center(
-              child: Container(
-                height: MediaQuery.of(context).size.height*0.1,
-                width: MediaQuery.of(context).size.height*0.3,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border(
-                    top: BorderSide(width: 1, )
-                  )
-                ),
-                child: Text(
-                  "dsds"
-                ),
-              ),
-            ),
-          ),
+
           Center(
             child: Container(
               height: MediaQuery.of(context).size.height * 0.6,
@@ -130,14 +112,14 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
                   /// Get swiping card's alignment
                   if (align.x < 0) {
                     //Card is LEFT swiping
-                    // setState(() {
-                    //   backgroundColor = Colors.red;
-                    // });
+                    setState(() {
+                      backgroundColor = Colors.red;
+                    });
                   } else if (align.x > 0) {
                     //Card is RIGHT swiping
-                    // setState(() {
-                    //   backgroundColor = Colors.blue;
-                    // });
+                    setState(() {
+                      backgroundColor = Colors.blue;
+                    });
                   }
                 },
                 swipeCompleteCallback:
@@ -155,13 +137,12 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
                     if (orientation != CardSwipeOrientation.RECOVER) {
                       // If card was swiped, move the swiped card to the rated list
                       widget.ratedHikes.add(widget.unratedHikes[index]);
-                      //widget.unratedHikes.remove(widget.unratedHikes[index]);
-                      //TODO: figure out how to remove from the unrated list without breaking things
+                      widget.unratedHikes.remove(widget.unratedHikes[index]);
                     }
 
-                    // setState(() {
-                    //   backgroundColor = Colors.lightGreen[700];
-                    // });
+                    setState(() {
+                      backgroundColor = Colors.lightGreen[700];
+                    });
 
                 },
               )

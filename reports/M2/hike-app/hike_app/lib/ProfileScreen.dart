@@ -53,18 +53,66 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(height:10,),
                 ],
               ),
-            ),
 
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Spacer(flex: 2),
+                ElevatedButton.icon(
+                  onPressed: (){},
+                  label:
+                  Text(
+                      "Change Pic"
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.green,
+                      onPrimary: Colors.white,
+                      shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(20.0)
+                      )
+                  ),
+                  icon: Icon(
+                    Icons.file_upload
+                  ),
+                ),
+                Spacer(),
+                ElevatedButton.icon(
+                    onPressed: (){},
+                    label:
+                      Text(
+                          "Logout"
+                      ),
+                    icon:
+                      Icon(
+                          Icons.logout
+                      ),
+                  style: 
+                    ElevatedButton.styleFrom(
+                      primary: Colors.red,
+                      onPrimary: Colors.white,
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(20.0)
+                      )
+                    ),
+                ),
+                Spacer(flex: 2),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ProfileSelector(userPreferences: widget.userPreferences,),
             ),
+
           ],
         ),
 
       ],
     )
     );
+  }
+  Future getImage() async{
+    //var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
   }
 }
 
@@ -222,7 +270,8 @@ class _ProfileSelectorState extends State<ProfileSelector> {
               );
             },
           ),
-        )
+        ),
+
       ],
     );
   }
@@ -320,4 +369,7 @@ class getClipper extends CustomClipper<Path> {
     // TODO: implement shouldReclip
     return true;
   }
+
+
 }
+
