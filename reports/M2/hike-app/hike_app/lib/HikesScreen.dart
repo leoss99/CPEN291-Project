@@ -67,25 +67,7 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
               color: Colors.lightGreen[900],
             ),
           ),
-          // Container(
-          //   height: MediaQuery.of(context).size.height * 0.3,
-          //   width: MediaQuery.of(context).size.width,
-          //   child: Center(
-          //     child: Container(
-          //       height: MediaQuery.of(context).size.height*0.1,
-          //       width: MediaQuery.of(context).size.height*0.3,
-          //       decoration: BoxDecoration(
-          //         color: Colors.white,
-          //         border: Border(
-          //           top: BorderSide(width: 1, )
-          //         )
-          //       ),
-          //       child: Text(
-          //         "dsds"
-          //       ),
-          //     ),
-          //   ),
-          // ),
+
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
