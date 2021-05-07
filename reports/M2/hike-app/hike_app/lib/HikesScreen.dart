@@ -105,7 +105,7 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
                     children: [
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0,20,0,0),
-                        child: Center(child: Image.network(widget.unratedHikes[index].photoURL)),
+                        child: Center(child: Image.network(widget.unratedHikes[index].img_1)),
                       ),
                       Expanded(
                         flex: 1,
