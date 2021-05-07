@@ -181,24 +181,6 @@ class _ProfileSelectorState extends State<ProfileSelector> {
               fontWeight: FontWeight.bold,
               fontFamily: 'Montserrat'),
         ),
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //   children: [
-        //     LabelledCheckbox(isChecked: true, label: "Dog-friendly",),
-        //
-        //     LabelledCheckbox(isChecked: true, label: "Wheelchair Accessible",),
-        //   ],
-        // ),
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //   children: [
-        //     LabelledCheckbox(isChecked: true, label: "Picnic",),
-        //
-        //     LabelledCheckbox(isChecked: true, label: "Kid-friendly",),
-        //
-        //     LabelledCheckbox(isChecked: true, label: "Bike-friendly",),
-        //   ],
-        // ),
 
         // Flutter Tags
         Center(

@@ -67,24 +67,95 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
               color: Colors.lightGreen[900],
             ),
           ),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.3,
-            width: MediaQuery.of(context).size.width,
-            child: Center(
-              child: Container(
-                height: MediaQuery.of(context).size.height*0.1,
-                width: MediaQuery.of(context).size.height*0.3,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border(
-                    top: BorderSide(width: 1, )
-                  )
-                ),
-                child: Text(
-                  "dsds"
-                ),
+          // Container(
+          //   height: MediaQuery.of(context).size.height * 0.3,
+          //   width: MediaQuery.of(context).size.width,
+          //   child: Center(
+          //     child: Container(
+          //       height: MediaQuery.of(context).size.height*0.1,
+          //       width: MediaQuery.of(context).size.height*0.3,
+          //       decoration: BoxDecoration(
+          //         color: Colors.white,
+          //         border: Border(
+          //           top: BorderSide(width: 1, )
+          //         )
+          //       ),
+          //       child: Text(
+          //         "dsds"
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              // Center(
+              //   child: Container(
+              //     height: 40,
+              //     width: 200,
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //       children: [
+              //         Icon(
+              //           Icons.clear_rounded,
+              //           color: Colors.red,
+              //           size: 40,
+              //         ),
+              //         VerticalDivider(
+              //           color: Colors.grey,
+              //         ),
+              //
+              //         IconButton(
+              //           color: Colors.white,
+              //
+              //           icon: Icon(
+              //             Icons.check_rounded,
+              //             color: Colors.green,
+              //             size: 40,
+              //           ),
+              //           onPressed: (){
+              //             print("woo!");
+              //           },
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+
+              ButtonBar(
+                alignment: MainAxisAlignment.center,
+                buttonHeight: 50,
+                buttonMinWidth: 90,
+                children: [
+                  RaisedButton(
+                    child: Icon(
+                      Icons.clear_rounded,
+                      color: Colors.red,
+                    ),
+                    onPressed: (){},
+                    color: Colors.white,
+                  ),
+                  RaisedButton(
+                    child: Icon(
+                      Icons.refresh_rounded,
+                      color: Colors.yellow[700],
+                    ),
+                    onPressed: (){},
+                    color: Colors.white,
+                  ),
+                  RaisedButton(
+                    child: Icon(
+                      Icons.check_rounded,
+                      color: Colors.green,
+                    ),
+                    onPressed: (){},
+                    color: Colors.white,
+                  ),
+                ],
               ),
-            ),
+
+              SizedBox(height: 40,)
+            ],
           ),
           Center(
             child: Container(
