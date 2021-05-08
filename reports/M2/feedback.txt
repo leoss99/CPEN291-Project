@@ -1,0 +1,7 @@
+Good progress team. It seems like you are having some trouble with recommender system. 
+Don't forget that your project is a difficult one and it pays off to use a modular approach, getting something easier to work correctly first, before building on top of it. For example, you are considering online training as user provides input.
+However, if you already have a dataset and the user preference in terms of hiking difficulty etc. , I don't see why you shouldn't be able to have a pretrained model and just recommend based on user profile. 
+This needs an embedding that searches for matching features based on user profile and hikes. 
+One more thing, distance from user seems like an important feature to consider when recommending hikes. For example, I don't want to travel 100KM just for a hike!
+Please use my comments only as advice, as your team makes the final decisions for your project. 
+P.S don't forget to try things out. You will never know what works and what doesn't unless you actually try it (hinting to different recommender models you are considering!) 
