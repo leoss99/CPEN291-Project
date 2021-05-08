@@ -14,12 +14,33 @@ review_put_args = reqparse.RequestParser()
 review_put_args.add_argument("hike_id", type=str, help="Hike ID required for review", required=True)
 review_put_args.add_argument("like", type=bool, help="Like status required for review", required=True)
 
+review_get_args = reqparse.RequestParser()
+review_get_args.add_argument("hike_id", type=str, help="Hike ID required for review", required=True)
+
 class ReviewResource(Resource):
+	@marshal_with(resource_fields)
+	def get(self, username):
+		args = review_get_args.parse_args()
+		hike_id = args['hike_id']
+		review_user = [user for user in users if user.username == username]
+		if len(review_user) == 0:
+			abort(404, message="Could not find a user with that username")
+		else:
+			user = review_user[0]
+			if hike_id in user.liked_hikes:
+				liked = True
+			elif hike_id in user.disliked_hikes:
+				liked = False
+			else:
+				abort(404, message="Could not find that review")
+		return {'username': username, 'hike_id': hike_id, 'like': liked}
+
 	@marshal_with(resource_fields)
 	def post(self, username):
 		args = review_put_args.parse_args()
 		hike_id = args['hike_id']
 		like = args['like']
+		print(like)
 		#Searches for associated user in user list
 		review_user = [user for user in users if user.username == username]
 		#Searches for associated hike in hike list

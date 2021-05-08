@@ -18,12 +18,13 @@ class User():
 
 	def review_hike(self, hike, like):
 		if like is True:
-			self.liked_hikes.append(hike)
+			self.liked_hikes.append(hike.hike_id)
 		else:
-			self.disliked_hikes.append(hike)
+			self.disliked_hikes.append(hike.hike_id)
 
 	def get_recommended_hike(self):
-		return hikes[1]
+		#TODO: include a recommender system to recommend unique hike based on the user
+		return hikes[41]
 
 class Hike():
 	def __init__(self, hike_id, name, location, difficulty, length, gain, hiketype, url, img_1, img_2, img_3, keywords):
