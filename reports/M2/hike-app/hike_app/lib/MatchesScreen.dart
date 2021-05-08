@@ -47,7 +47,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
         itemCount: widget.matches.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            leading: Image.network(widget.matches[index].img_1),
+            leading: Image.network(widget.matches[index].images[0]),
             title: Text(widget.matches[index].parsedName()),
             onTap: () {
               Navigator.push(context, MaterialPageRoute<void>(
@@ -57,7 +57,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                     body: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.network(widget.matches[index].img_1),
+                        Image.network(widget.matches[index].images[0]),
                         TwoToneText(title: "Distance", content: "10 km",),
                         TwoToneText(title: "Elevation Gain", content: "100 m",),
                         TwoToneText(title: "Difficulty", content: "Moderate",),

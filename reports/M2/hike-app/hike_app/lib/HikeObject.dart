@@ -4,7 +4,7 @@ class HikeObject {
 
   String hikeName; // Name of hike, such as garibaldi-lake-trail
   String url; // TODO: Is this needed? URL is always the same with hike name appended
-  String img_1, img_2, img_3; // URLs of images. If image is missing, URL is null
+  List<String> images; // URLs of images. If image is missing, URL is null
   String rating; // Either 'liked', 'disliked', or 'unrated'
 
   // Extra details for displaying on matches page
@@ -17,7 +17,7 @@ class HikeObject {
   List<String> keywords;
 
 
-  HikeObject({this.hikeName, this.img_1, this.img_2, this.img_3, this.rating = 'unrated'});
+  HikeObject({this.hikeName, this.images, this.rating = 'unrated'});
 
 
   /// Creates a new HikeObject from a map decoded from a JSON object
@@ -30,9 +30,16 @@ class HikeObject {
     this.gain = json['gain'];
     this.hikeType = json['hiketype'];
     this.url = json['url'];
-    this.img_1 = json['img_1'];
-    this.img_2 = json['img_2'];
-    this.img_3 = json['img_3'];
+
+    this.images = [];
+    if (json['img_1'] != null)
+      this.images.add(json['img_1']);
+    if (json['img_2'] != null)
+      this.images.add(json['img_2']);
+    if (json['img_3'] != null)
+      this.images.add(json['img_3']);
+
+
     this.keywords = json['keywords'];
 
     this.rating = "unrated";

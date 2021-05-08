@@ -44,6 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ])),
                   SizedBox(height: 15),
                   Text(
+                    // TODO: Allow user to change username, save username for sending to backend
                     'Tom Cruise',
                     style: TextStyle(
                         fontSize: 30.0,

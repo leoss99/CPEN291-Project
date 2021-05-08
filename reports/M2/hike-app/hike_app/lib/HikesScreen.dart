@@ -1,5 +1,6 @@
 //import 'dart:html';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_tindercard/flutter_tindercard.dart';
@@ -7,6 +8,7 @@ import 'package:hiking_app/main.dart';
 import 'package:hiking_app/HikeObject.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class HikesScreen extends StatefulWidget {
   List<HikeObject> unratedHikes;
@@ -142,6 +144,7 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
                         ),
                         onPressed: () {
                           //TODO: Add hike refresh functionality.
+                          // Note: hikes should automatically refresh when the list gets too small (<5 hikes)
                         },
                         color: Colors.white,
                       ),
@@ -199,21 +202,24 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
                                     padding: const EdgeInsets.fromLTRB(
                                         0, 20, 0, 0),
                                     child: Center(child: Image.network(
-                                        widget.unratedHikes[index].img_1)),
+                                        widget.unratedHikes[index].images[0])),
                                   ),
                                   Expanded(
                                     flex: 1,
-                                    child: Center(
-                                      child: Container(
-                                          child: Text(
-                                            widget.unratedHikes[index]
-                                                .parsedName(),
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          )
-                                      ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Container(
+                                            child: Text(
+                                              widget.unratedHikes[index]
+                                                  .parsedName(),
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            )
+                                        ),
+                                      ],
                                     ),
                                   )
                                 ],
