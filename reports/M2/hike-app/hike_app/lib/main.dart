@@ -41,6 +41,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
 
     userPreferences = ProfileData();
+    // For testing, initialize unrated hikes list
     unratedHikes = [HikeObject(hikeName: 'garibaldi-lake-trail', rating: 'unrated',
         images: [
           'https://cdn-assets.alltrails.com/uploads/photo/image/23957167/large_04c8a06a56c3a328db71d851edb1bfb7.jpg',

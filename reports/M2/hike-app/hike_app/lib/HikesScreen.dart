@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hiking_app/StandInAPI.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:hiking_app/main.dart';
@@ -29,17 +30,20 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
 
   /// Method for getting hikes from backend
   void _getHikes(List<HikeObject> unratedHikes) async {
-    final hikeAPIUrl = 'http://mock-json-service.glitch.me/';
-    final response = await http.get(hikeAPIUrl);
+    // final hikeAPIUrl = 'http://mock-json-service.glitch.me/';
+    // final response = await http.get(hikeAPIUrl);
+    //
+    // if (response.statusCode == 200) {
+    //   // If response was successful, parse json object and add hikes to unrated list
+    //   List jsonResponse = json.decode(response.body);
+    //   List<HikeObject> newHikes = jsonResponse.map((hike) => HikeObject.fromJson(hike)).toList();
+    //   unratedHikes.addAll(newHikes);
+    // } else {
+    //   throw Exception('failed to load new hikes from API');
+    // }
 
-    if (response.statusCode == 200) {
-      // If response was successful, parse json object and add hikes to unrated list
-      List jsonResponse = json.decode(response.body);
-      List<HikeObject> newHikes = jsonResponse.map((hike) => HikeObject.fromJson(hike)).toList();
-      unratedHikes.addAll(newHikes);
-    } else {
-      throw Exception('failed to load new hikes from API');
-    }
+    // Until API is ready, use this temporary method to simulate the API call
+    return unratedHikes.addAll(StandInAPI.getHikesNoAPI());
   }
 
   @override
@@ -144,8 +148,9 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
                           color: Colors.yellow[700],
                         ),
                         onPressed: () {
-                          //TODO: Add hike refresh functionality.
-                          // Note: hikes should automatically refresh when the list gets too small (<5 hikes)
+                          setState(() {
+                            _getHikes(widget.unratedHikes);
+                          });
                         },
                         color: Colors.white,
                       ),
@@ -267,6 +272,14 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
                             widget.ratedHikes.add(widget.unratedHikes[index]);
                             widget.unratedHikes.remove(
                                 widget.unratedHikes[index]);
+
+                            // Check if we need to get more hikes
+                            if (widget.unratedHikes.length < 5) {
+                              // Make API call getHikes
+                              setState(() {
+                                _getHikes(widget.unratedHikes);
+                              });
+                            }
                           }
 
                           setState(() {
