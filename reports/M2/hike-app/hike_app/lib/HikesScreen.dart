@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:hiking_app/main.dart';
@@ -201,8 +202,16 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         0, 20, 0, 0),
-                                    child: Center(child: Image.network(
-                                        widget.unratedHikes[index].images[0])),
+                                    child: Center(
+                                        child: CarouselSlider(
+                                          items: widget.unratedHikes[index].images.map((imgURL) => Image.network(imgURL)).toList(),
+                                          options: CarouselOptions(
+                                            scrollDirection: Axis.vertical,
+                                            enlargeCenterPage: true,
+                                            viewportFraction: 1,
+                                          ),
+                                        ),
+                                    ),
                                   ),
                                   Expanded(
                                     flex: 1,
