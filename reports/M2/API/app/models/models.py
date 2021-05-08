@@ -18,3 +18,12 @@ class HikeModel(db.Model):
 
 	def __repr__(self):
 		return f"Hike(name={name}, location={location}, difficulty={difficulty}, length={length}, gain={gain}, hiketype={hiketype}, url={url}, image 1 name={img_1}, image 2 name={img_2}, image 3 name={img_3}, keywords={keywords}"
+
+class LikedHikes(db.Model):
+	user_id = db.Column(db.String(250), primary_key=True)
+	hike_id = db.Column(db.String(250), primary_key=True)
+
+class DislikedHikes(db.Model):
+	user_id = db.Column(db.String(250), primary_key=True)
+	hike_id = db.Column(db.String(250), primary_key=True)
+
