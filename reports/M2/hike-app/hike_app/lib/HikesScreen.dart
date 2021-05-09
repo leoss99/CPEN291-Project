@@ -30,6 +30,34 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
 
   /// Method for getting hikes from backend
   void _getHikes(List<HikeObject> unratedHikes) async {
+
+    // Until API is ready, use a temporary method to simulate the API call
+    String tempAPIResponse = StandInAPI.getHikesNoAPI();
+    // Decode the json string and make hike objects
+    List jsonResponse = json.decode(tempAPIResponse);
+    List<HikeObject> newHikes = jsonResponse.map((hike) => HikeObject.fromJson(hike)).toList();
+    // Add the new hike objects to the list of unrated hikes
+    unratedHikes.addAll(newHikes);
+
+    // final hikeAPIUrl = 'http://mock-json-service.glitch.me/';
+    // final response = await http.get(hikeAPIUrl);
+    //
+    // if (response.statusCode == 200) {
+    //   // If response was successful, parse json object and add hikes to unrated list
+    //   List jsonResponse = json.decode(response.body);
+    //   List<HikeObject> newHikes = jsonResponse.map((hike) => HikeObject.fromJson(hike)).toList();
+    //   unratedHikes.addAll(newHikes);
+    // } else {
+    //   throw Exception('failed to load new hikes from API');
+    // }
+  }
+
+  /// Method for posting hikes to backend
+  void _postHikes(List<HikeObject> ratedHikes) async {
+    // Convert HikeObjects to Maps, save in list
+    List hikes = ratedHikes.map((hike) => hike.toJson()).toList();
+    String jsonHikes = jsonEncode(hikes);
+
     // final hikeAPIUrl = 'http://mock-json-service.glitch.me/';
     // final response = await http.get(hikeAPIUrl);
     //
@@ -43,7 +71,9 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
     // }
 
     // Until API is ready, use this temporary method to simulate the API call
-    return unratedHikes.addAll(StandInAPI.getHikesNoAPI());
+    StandInAPI.postHikesNoAPI(jsonHikes);
+    // If response is successful, clear the ratedHikes list
+    ratedHikes.clear();
   }
 
   @override
@@ -94,38 +124,6 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  // Center(
-                  //   child: Container(
-                  //     height: 40,
-                  //     width: 200,
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //       children: [
-                  //         Icon(
-                  //           Icons.clear_rounded,
-                  //           color: Colors.red,
-                  //           size: 40,
-                  //         ),
-                  //         VerticalDivider(
-                  //           color: Colors.grey,
-                  //         ),
-                  //
-                  //         IconButton(
-                  //           color: Colors.white,
-                  //
-                  //           icon: Icon(
-                  //             Icons.check_rounded,
-                  //             color: Colors.green,
-                  //             size: 40,
-                  //           ),
-                  //           onPressed: (){
-                  //             print("woo!");
-                  //           },
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
 
                   ButtonBar(
                     alignment: MainAxisAlignment.center,
@@ -274,10 +272,11 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
                                 widget.unratedHikes[index]);
 
                             // Check if we need to get more hikes
-                            if (widget.unratedHikes.length < 5) {
-                              // Make API call getHikes
+                            if (widget.unratedHikes.length == 0) {
+                              // Make API calls to get more hikes and send back rated hikes
                               setState(() {
                                 _getHikes(widget.unratedHikes);
+                                _postHikes(widget.ratedHikes);
                               });
                             }
                           }

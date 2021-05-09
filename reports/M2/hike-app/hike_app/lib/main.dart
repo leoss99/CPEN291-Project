@@ -30,5 +30,3 @@ class HikeApp extends StatelessWidget{
     );
   }
 }
-
-
