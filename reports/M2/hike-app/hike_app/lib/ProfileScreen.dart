@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_tags/flutter_tags.dart';
@@ -79,7 +80,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 Spacer(),
                 ElevatedButton.icon(
-                    onPressed: (){},
+                    onPressed: (){
+                      FirebaseAuth.instance.signOut().then((value){
+                        Navigator.of(context).pushReplacementNamed('/landingpage');
+                      }).catchError((e){
+                        print(e);
+                      });
+                    },
                     label:
                       Text(
                           "Logout"
@@ -98,6 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                 ),
                 Spacer(flex: 2),
+
               ],
             ),
             Padding(
@@ -106,6 +114,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
 
           ],
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: ElevatedButton(
+            onPressed: (){
+              showAlertDialog(context);
+            } ,
+            child: Text("DELETE ACCOUNT"),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.red,
+              onPrimary: Colors.white,
+            ),
+
+          ),
         ),
 
       ],
@@ -354,5 +376,42 @@ class getClipper extends CustomClipper<Path> {
   }
 
 
+}
+showAlertDialog(BuildContext context) {
+
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: Text("Cancel"),
+    onPressed:  () => Navigator.of(context).pop(),
+  );
+  Widget continueButton = TextButton(
+    child: Text("I'm sure"),
+    onPressed:  () {
+      User user = FirebaseAuth.instance.currentUser;
+      user.delete().then((value){
+        Navigator.of(context).pushReplacementNamed('/landingpage');
+      }).catchError((e){
+        print(e);
+      });
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Delete Account?"),
+    content: Text("Are you sure you would like to delete your account? This action cannot be undone."),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
 

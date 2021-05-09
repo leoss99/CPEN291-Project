@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "911714708334",
+    "project_id": "hike-app-d0a88",
+    "storage_bucket": "hike-app-d0a88.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:911714708334:android:fc71cf1c9e13f389e56f7f",
+        "android_client_info": {
+          "package_name": "com.example.hike_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "911714708334-68sod9c0bdvdk132usf3h1c05s6q1eeu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAj6i35leHIjmR1dOmxUL5OEBHKNVB7yEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "911714708334-68sod9c0bdvdk132usf3h1c05s6q1eeu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

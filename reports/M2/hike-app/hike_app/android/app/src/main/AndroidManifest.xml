@@ -2,7 +2,8 @@
     package="com.example.hike_app">
    <application
         android:label="hike_app"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+       android:name="androidx.multidex.MultiDexApplication">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
