@@ -46,42 +46,84 @@ class _MatchesScreenState extends State<MatchesScreen> {
         padding: EdgeInsets.all(8),
         itemCount: widget.matches.length,
         itemBuilder: (BuildContext context, int index) {
+
+          HikeObject currentHike = widget.matches[index];
+
           return ListTile(
-            leading: Image.network(widget.matches[index].images[0]),
-            title: Text(widget.matches[index].parsedName()),
+            leading: Image.network(currentHike.images[0]),
+            title: Text(currentHike.parsedName()),
             onTap: () {
               Navigator.push(context, MaterialPageRoute<void>(
                 builder: (BuildContext context) {
                   return Scaffold(
-                    appBar: AppBar(title: Text(widget.matches[index].parsedName()),backgroundColor: Colors.lightGreen[700],),
+                    appBar: AppBar(title: Text(currentHike.parsedName()),backgroundColor: Colors.lightGreen[700],),
                     body: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.network(widget.matches[index].images[0]),
-                        TwoToneText(title: "Distance", content: "10 km",),
-                        TwoToneText(title: "Elevation Gain", content: "100 m",),
-                        TwoToneText(title: "Difficulty", content: "Moderate",),
+                        Image.network(currentHike.images[0]), // TODO: Change this static image to image carousel
+                        TwoToneText(title: "Location", content: currentHike.location,),
+                        TwoToneText(title: "Difficulty", content: currentHike.difficulty,),
+                        TwoToneText(title: "Distance", content: currentHike.length,),
+                        TwoToneText(title: "Elevation Gain", content: currentHike.gain,),
+                        TwoToneText(title: "Hike Type", content: currentHike.hikeType,),
                         SizedBox(height: 15,),
-                        Center(
-                          child: RaisedButton(
-                            child: Text("View on AllTrails.com"),
-                            onPressed: (){
-                              String hikeURL = 'https://www.alltrails.com/trail/canada/british-columbia/' + widget.matches[index].hikeName;
-                              print("Button Pressed! Link to hike is: $hikeURL");
-                            }
-                          ),
+                        ButtonBar(
+                          alignment: MainAxisAlignment.center,
+                          children: [
+                            RaisedButton(
+                                child: Row(
+                                  children: [
+                                    Text("View on AllTrails.com"),
+                                    Icon(
+                                        Icons.terrain_rounded
+                                    ),
+                                  ],
+                                ),
+                                onPressed: (){
+                                  // TODO: Implement "View on AllTrails", take user to browser
+                                  //String hikeURL = 'https://www.alltrails.com/trail/canada/british-columbia/' + widget.matches[index].hikeName;
+                                  print("Button Pressed! Link to hike is: ${currentHike.url}");
+                                }
+                            ),
+                            RaisedButton(
+                                child: Row(
+                                  children: [
+                                    Text("Reject"),
+                                    Icon(
+                                      Icons.highlight_remove
+                                    ),
+                                  ],
+                                ),
+                                onPressed: (){
+                                  setState(() {
+                                    widget.matches.remove(currentHike);
+                                  });
+                                  Navigator.pop(context);
+                                }
+                            ),
+                          ],
                         ),
-                        Center(
-                          child: RaisedButton(
-                              child: Text("Reject"),
-                              onPressed: (){
-                                setState(() {
-                                  widget.matches.remove(widget.matches[index]);
-                                });
-                                Navigator.pop(context);
-                              }
-                          ),
-                        ),
+                        // Center(
+                        //   child: RaisedButton(
+                        //     child: Text("View on AllTrails.com"),
+                        //     onPressed: (){
+                        //       // TODO: Implement "View on AllTrails", take user to browser
+                        //       //String hikeURL = 'https://www.alltrails.com/trail/canada/british-columbia/' + widget.matches[index].hikeName;
+                        //       print("Button Pressed! Link to hike is: ${currentHike.url}");
+                        //     }
+                        //   ),
+                        // ),
+                        // Center(
+                        //   child: RaisedButton(
+                        //       child: Text("Reject"),
+                        //       onPressed: (){
+                        //         setState(() {
+                        //           widget.matches.remove(currentHike);
+                        //         });
+                        //         Navigator.pop(context);
+                        //       }
+                        //   ),
+                        // ),
                       ],
                     )
                   );
