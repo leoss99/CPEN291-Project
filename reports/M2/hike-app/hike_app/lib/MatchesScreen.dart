@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hiking_app/HikeObject.dart';
@@ -60,7 +61,14 @@ class _MatchesScreenState extends State<MatchesScreen> {
                     body: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.network(currentHike.images[0]), // TODO: Change this static image to image carousel
+                        CarouselSlider(
+                          items: currentHike.images.map((imgURL) => Image.network(imgURL)).toList(),
+                          options: CarouselOptions(
+                            scrollDirection: Axis.vertical,
+                            enlargeCenterPage: true,
+                            viewportFraction: 1,
+                          ),
+                        ),
                         TwoToneText(title: "Location", content: currentHike.location,),
                         TwoToneText(title: "Difficulty", content: currentHike.difficulty,),
                         TwoToneText(title: "Distance", content: currentHike.length,),
