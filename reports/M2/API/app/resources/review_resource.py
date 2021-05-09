@@ -35,12 +35,10 @@ class ReviewResource(Resource):
 				abort(404, message="Could not find that review")
 		return {'username': username, 'hike_id': hike_id, 'like': liked}
 
-	@marshal_with(resource_fields)
 	def post(self, username):
 		args = review_put_args.parse_args()
 		hike_id = args['hike_id']
-		like = args['like']
-		print(like)
+		like = bool(args['like'])
 		#Searches for associated user in user list
 		review_user = [user for user in users if user.username == username]
 		#Searches for associated hike in hike list
@@ -55,4 +53,4 @@ class ReviewResource(Resource):
 			hike = review_hike[0]
 
 		user.review_hike(hike, like)
-		return jsonify({'success': True}), 202
+		return 202

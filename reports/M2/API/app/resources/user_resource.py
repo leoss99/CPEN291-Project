@@ -5,22 +5,22 @@ from models import Hike, User, hikes, users
 
 resource_fields = {
 	'username': fields.String,
-	'distance_min': fields.Integer,
-	'distance_max': fields.Integer,
-	'elevation_min': fields.Integer,
-	'elevation_max': fields.Integer,
+	'length_min': fields.Integer,
+	'length_max': fields.Integer,
+	'gain_min': fields.Integer,
+	'gain_max': fields.Integer,
 	'easy': fields.Boolean,
-	'medium': fields.Boolean,
+	'moderate': fields.Boolean,
 	'hard':  fields.Boolean
 }
 
 user_put_args = reqparse.RequestParser()
-user_put_args.add_argument("distance_min", type=int, help="Minimum distance required", required=True)
-user_put_args.add_argument("distance_max", type=int, help="Maximum distance required", required=True)
-user_put_args.add_argument("elevation_min", type=int, help="Minimum elevation required", required=True)
-user_put_args.add_argument("elevation_max", type=int, help="Maximum elevation required", required=True)
+user_put_args.add_argument("length_min", type=int, help="Minimum distance required", required=True)
+user_put_args.add_argument("length_max", type=int, help="Maximum distance required", required=True)
+user_put_args.add_argument("gain_min", type=int, help="Minimum elevation required", required=True)
+user_put_args.add_argument("gain_max", type=int, help="Maximum elevation required", required=True)
 user_put_args.add_argument("easy", type=bool, help="Easy preference required", required=True)
-user_put_args.add_argument("medium", type=bool, help="Medimum preference required", required=True)
+user_put_args.add_argument("moderate", type=bool, help="Moderate preference required", required=True)
 user_put_args.add_argument("hard", type=bool, help="Hard preference required", required=True)
 
 
@@ -33,17 +33,16 @@ class UserResource(Resource):
 		else:
 			return retval[0]
 
-	@marshal_with(resource_fields)
 	def post(self, username):
 		args = user_put_args.parse_args()
 		retval = [user for user in users if user.username == username]
 		if len(retval) != 0:
 			abort(409, message="User with that username already exists")
 		else:
-			newUser = User(username=username, distance_min=args['distance_min'], distance_max=args['distance_max'], elevation_min=args['elevation_min'],
-				elevation_max=args['elevation_max'], easy=args['easy'], medium=args['medium'], hard=args['hard'])
+			newUser = User(username=username, length_min=args['length_min'], length_max=args['length_max'], gain_min=args['gain_min'],
+				gain_max=args['gain_max'], easy=args['easy'], moderate=args['moderate'], hard=args['hard'])
 			users.append(newUser)
-			return jsonify({'success': True}), 202
+			return 202
 
 
 

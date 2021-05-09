@@ -6,6 +6,7 @@ from models import Hike, User, hikes, users
 resource_fields = {
 	'hike_id': fields.String,
 	'name': fields.String,
+	'rating': fields.String,
 	'location': fields.String,
 	'difficulty': fields.String,
 	'length': fields.Float,
@@ -21,10 +22,10 @@ resource_fields = {
 class HikeResource(Resource):
 	@marshal_with(resource_fields)
 	def get(self, username):
-		retval = [user for user in users if user.username == username]
-		if len(retval) == 0:
+		userlist = [user for user in users if user.username == username]
+		if len(userlist) == 0:
 			abort(404, message="Could not find a user with that username")
 		else:
-			hike = retval[0].get_recommended_hike()
+			hike = userlist[0].get_recommended_hike()
 		return hike
 

@@ -11,9 +11,9 @@ def init_hike_list():
 	mydata = pd.read_csv("stats.csv", engine='python')
 	for i in range(len(mydata.ID)):
 
-		newHike = Hike(hike_id =mydata.ID[i], name=mydata.Name[i], location=mydata.Location[i], difficulty=mydata.Difficulty[i],
-			length=mydata.Length[i], gain=mydata.Gain[i], hiketype=mydata.Route[i],
-			url=mydata.Link[i], img_1=mydata.img1[i], img_2=mydata.img2[i], img_3=mydata.img3[i],
+		newHike = Hike(hike_id =mydata.ID[i], name=mydata.Name[i], rating=mydata.Rating[i], location=mydata.Location[i], difficulty=mydata.Difficulty[i],
+			length=mydata.Length[i], gain=int(mydata.Gain[i].replace(",","")), hiketype=mydata.Route[i],
+			url=mydata.Link[i], img_1=mydata.img1_url[i], img_2=mydata.img2_url[i], img_3=mydata.img3_url[i],
 			keywords=mydata.Keywords[i])
 		hikes.append(newHike)
 
