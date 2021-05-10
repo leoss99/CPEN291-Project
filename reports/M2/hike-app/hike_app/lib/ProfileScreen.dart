@@ -152,8 +152,6 @@ class ProfileSelector extends StatefulWidget {
 }
 
 class _ProfileSelectorState extends State<ProfileSelector> {
-  // Initialize selector sliders
-
 
   @override
   Widget build(BuildContext context) {
@@ -244,38 +242,6 @@ class _ProfileSelectorState extends State<ProfileSelector> {
             },
           ),
         ),
-        Text(
-          "Tags:",
-          textAlign: TextAlign.start,
-          style: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Montserrat'),
-        ),
-
-        // Flutter Tags
-        Center(
-          child: Tags(
-            itemCount: widget.userPreferences.tagLabels.length,
-            itemBuilder: (int index) {
-              final item = widget.userPreferences.tagLabels[index];
-
-              return ItemTags(
-                active: widget.userPreferences.tagSelected[index],
-                elevation: 0,
-                border: Border.all(width: 0),
-                color: Colors.grey[300],
-                activeColor: Colors.lightBlue,
-                index: index,
-                title: item,
-                onPressed: (a) {
-                  print(item);
-                  widget.userPreferences.tagSelected[index] = !widget.userPreferences.tagSelected[index];
-                },
-              );
-            },
-          ),
-        ),
 
       ],
     );
@@ -283,43 +249,6 @@ class _ProfileSelectorState extends State<ProfileSelector> {
 
 }
 
-/// A checkbox and label
-class LabelledCheckbox extends StatefulWidget {
-  bool isChecked; // Need a way to identify status of individual boxes
-  final String label;
-  double labelSize = 14.0;
-
-  LabelledCheckbox({Key key, this.isChecked, this.label, this.labelSize}): super(key:key);
-
-  @override
-  _LabelledCheckboxState createState() => _LabelledCheckboxState();
-}
-
-class _LabelledCheckboxState extends State<LabelledCheckbox> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Checkbox(
-          value: widget.isChecked,
-          onChanged: (bool value) {
-            setState(() {
-              widget.isChecked = value;
-            });
-          },
-        ),
-        Text(
-          widget.label,
-          style: TextStyle(
-              fontSize: widget.labelSize,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Montserrat'),
-        ),
-      ],
-    );
-  }
-}
 
 /// Data object for storing selected preferences on profile page
 class ProfileData {

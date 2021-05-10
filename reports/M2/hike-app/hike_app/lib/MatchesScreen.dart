@@ -1,8 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hiking_app/HikeObject.dart';
-import 'package:hiking_app/main.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MatchesScreen extends StatefulWidget{
   // Hike names and urls come from backend
@@ -14,6 +13,24 @@ class MatchesScreen extends StatefulWidget{
 }
 
 class _MatchesScreenState extends State<MatchesScreen> {
+
+  /// Method for opening a hike url in a webview within the app
+  Future<void> launchHikeInWebView(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: true,
+        forceWebView: true,
+        enableJavaScript: true,
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  /// Method for opening a hike url in the user's external browser
+  void launchHikeInBrowser(String url) async =>
+      await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
 
   @override
   Widget build(BuildContext context){
@@ -78,7 +95,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                         ButtonBar(
                           alignment: MainAxisAlignment.center,
                           children: [
-                            RaisedButton(
+                            ElevatedButton(
                                 child: Row(
                                   children: [
                                     Text("View on AllTrails.com"),
@@ -88,12 +105,10 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                   ],
                                 ),
                                 onPressed: (){
-                                  // TODO: Implement "View on AllTrails", take user to browser
-                                  //String hikeURL = 'https://www.alltrails.com/trail/canada/british-columbia/' + widget.matches[index].hikeName;
-                                  print("Button Pressed! Link to hike is: ${currentHike.url}");
+                                  launchHikeInBrowser(currentHike.url);
                                 }
                             ),
-                            RaisedButton(
+                            ElevatedButton(
                                 child: Row(
                                   children: [
                                     Text("Reject"),
@@ -111,27 +126,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                             ),
                           ],
                         ),
-                        // Center(
-                        //   child: RaisedButton(
-                        //     child: Text("View on AllTrails.com"),
-                        //     onPressed: (){
-                        //       // TODO: Implement "View on AllTrails", take user to browser
-                        //       //String hikeURL = 'https://www.alltrails.com/trail/canada/british-columbia/' + widget.matches[index].hikeName;
-                        //       print("Button Pressed! Link to hike is: ${currentHike.url}");
-                        //     }
-                        //   ),
-                        // ),
-                        // Center(
-                        //   child: RaisedButton(
-                        //       child: Text("Reject"),
-                        //       onPressed: (){
-                        //         setState(() {
-                        //           widget.matches.remove(currentHike);
-                        //         });
-                        //         Navigator.pop(context);
-                        //       }
-                        //   ),
-                        // ),
+
                       ],
                     )
                   );
@@ -146,6 +141,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
   }
 }
 
+/// Helper class for creating Text with a bold title and regular content
 class TwoToneText extends StatelessWidget {
   final String title;
   final String content;
