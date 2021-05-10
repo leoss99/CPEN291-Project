@@ -2,6 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_tags/flutter_tags.dart';
+import 'package:hiking_app/services/databaseservice.dart';
+import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileScreen extends StatefulWidget{
   ProfileData userPreferences;
@@ -15,6 +18,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context){
     return new Scaffold(
+      floatingActionButton: new FloatingActionButton(
+        onPressed: () async {
+          await DatabaseService(
+              uid: FirebaseAuth.instance.currentUser.uid
+          ).updateUserData(
+              widget.userPreferences.prefDistance.start,
+              widget.userPreferences.prefDistance.end,
+              widget.userPreferences.prefElevation.start,
+              widget.userPreferences.prefElevation.end,
+              widget.userPreferences.prefEasy,
+              widget.userPreferences.prefMod,
+              widget.userPreferences.prefHard
+          );
+
+        },
+        child: const Icon(Icons.save),
+        backgroundColor: Colors.lightGreen[700],
+      ),
+    floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
     body: new Stack(
       children: <Widget>[
         ClipPath(
@@ -119,7 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           alignment: Alignment.bottomCenter,
           child: ElevatedButton(
             onPressed: (){
-              showAlertDialog(context);
+              showConfirmDeleteDialog(context);
             } ,
             child: Text("DELETE ACCOUNT"),
             style: ElevatedButton.styleFrom(
@@ -158,126 +180,130 @@ class _ProfileSelectorState extends State<ProfileSelector> {
   @override
   Widget build(BuildContext context) {
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Hike Length:",
-          style: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Montserrat'),
-        ),
-        RangeSlider(
-          values: widget.userPreferences.prefDistance,
-          min: 0,
-          max: 100,
-          divisions: 20,
-          labels: RangeLabels(
-            widget.userPreferences.prefDistance.start.round().toString() + " km",
-            widget.userPreferences.prefDistance.end.round().toString() + " km",
+    return StreamProvider<QuerySnapshot>.value(
+      value: DatabaseService(uid: FirebaseAuth.instance.currentUser.uid).userPrefs,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Hike Length:",
+            style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Montserrat'),
           ),
-          onChanged: (RangeValues values) {
-            setState(() {
-              widget.userPreferences.prefDistance = values;
-            });
-          },
-        ),
-        Text(
-          "Elevation Gain:",
-          style: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Montserrat'),
-        ),
-        RangeSlider(
-          values: widget.userPreferences.prefElevation,
-          min: 0,
-          max: 1000,
-          divisions: 20,
-          labels: RangeLabels(
-            widget.userPreferences.prefElevation.start.round().toString() + " m",
-            widget.userPreferences.prefElevation.end.round().toString() + " m",
-          ),
-          onChanged: (RangeValues values) {
-            setState(() {
-              widget.userPreferences.prefElevation = values;
-            });
-          },
-        ),
-        Text(
-          "Difficulty:",
-          textAlign: TextAlign.start,
-          style: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Montserrat'),
-        ),
-        SizedBox(height: 5,),
-        Center(
-          child: ToggleButtons(
-            constraints: BoxConstraints(minWidth: 100, minHeight: 40),
-            children: <Widget>[
-              Text("Easy"),
-              Text("Moderate"),
-              Text("Hard"),
-            ],
-            isSelected: [
-              widget.userPreferences.prefEasy,
-              widget.userPreferences.prefMod,
-              widget.userPreferences.prefHard
-            ],
-            onPressed: (int index) {
+          RangeSlider(
+            values: widget.userPreferences.prefDistance,
+            min: 0,
+            max: 100,
+            divisions: 20,
+            labels: RangeLabels(
+              widget.userPreferences.prefDistance.start.round().toString() + " km",
+              widget.userPreferences.prefDistance.end.round().toString() + " km",
+            ),
+            onChanged: (RangeValues values) {
               setState(() {
-                switch(index) {
-                  case 0:
-                    widget.userPreferences.prefEasy = !widget.userPreferences.prefEasy;
-                    return;
-                  case 1:
-                    widget.userPreferences.prefMod = !widget.userPreferences.prefMod;
-                    return;
-                  default:
-                    widget.userPreferences.prefHard = !widget.userPreferences.prefHard;
-                }
+                widget.userPreferences.prefDistance = values;
+              });
+
+            },
+          ),
+          Text(
+            "Elevation Gain:",
+            style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Montserrat'),
+          ),
+          RangeSlider(
+            values: widget.userPreferences.prefElevation,
+            min: 0,
+            max: 1000,
+            divisions: 20,
+            labels: RangeLabels(
+              widget.userPreferences.prefElevation.start.round().toString() + " m",
+              widget.userPreferences.prefElevation.end.round().toString() + " m",
+            ),
+            onChanged: (RangeValues values) {
+              setState(() {
+                widget.userPreferences.prefElevation = values;
               });
             },
           ),
-        ),
-        Text(
-          "Tags:",
-          textAlign: TextAlign.start,
-          style: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Montserrat'),
-        ),
-
-        // Flutter Tags
-        Center(
-          child: Tags(
-            itemCount: widget.userPreferences.tagLabels.length,
-            itemBuilder: (int index) {
-              final item = widget.userPreferences.tagLabels[index];
-
-              return ItemTags(
-                active: widget.userPreferences.tagSelected[index],
-                elevation: 0,
-                border: Border.all(width: 0),
-                color: Colors.grey[300],
-                activeColor: Colors.lightBlue,
-                index: index,
-                title: item,
-                onPressed: (a) {
-                  print(item);
-                  widget.userPreferences.tagSelected[index] = !widget.userPreferences.tagSelected[index];
-                },
-              );
-            },
+          Text(
+            "Difficulty:",
+            textAlign: TextAlign.start,
+            style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Montserrat'),
           ),
-        ),
+          SizedBox(height: 5,),
+          Center(
+            child: ToggleButtons(
+              constraints: BoxConstraints(minWidth: 100, minHeight: 40),
+              children: <Widget>[
+                Text("Easy"),
+                Text("Moderate"),
+                Text("Hard"),
+              ],
+              isSelected: [
+                widget.userPreferences.prefEasy,
+                widget.userPreferences.prefMod,
+                widget.userPreferences.prefHard
+              ],
+              onPressed: (int index) {
+                setState(() {
+                  switch(index) {
+                    case 0:
+                      widget.userPreferences.prefEasy = !widget.userPreferences.prefEasy;
+                      return;
+                    case 1:
+                      widget.userPreferences.prefMod = !widget.userPreferences.prefMod;
+                      return;
+                    default:
+                      widget.userPreferences.prefHard = !widget.userPreferences.prefHard;
+                  }
+                });
+              },
+            ),
+          ),
+          Text(
+            "Tags:",
+            textAlign: TextAlign.start,
+            style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Montserrat'),
+          ),
 
-      ],
+          // Flutter Tags
+          Center(
+            child: Tags(
+              itemCount: widget.userPreferences.tagLabels.length,
+              itemBuilder: (int index) {
+                final item = widget.userPreferences.tagLabels[index];
+
+                return ItemTags(
+                  active: widget.userPreferences.tagSelected[index],
+                  elevation: 0,
+                  border: Border.all(width: 0),
+                  color: Colors.grey[300],
+                  activeColor: Colors.lightBlue,
+                  index: index,
+                  title: item,
+                  onPressed: (a) {
+                    print(item);
+                    widget.userPreferences.tagSelected[index] = !widget.userPreferences.tagSelected[index];
+                  },
+                );
+              },
+            ),
+          ),
+
+        ],
+      ),
     );
   }
 
@@ -377,7 +403,7 @@ class getClipper extends CustomClipper<Path> {
 
 
 }
-showAlertDialog(BuildContext context) {
+showConfirmDeleteDialog(BuildContext context) {
 
   // set up the buttons
   Widget cancelButton = TextButton(

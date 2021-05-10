@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 // import 'package:hiking_app/HikesScreen.dart';
 // import 'package:hiking_app/ProfileScreen.dart';
 // import 'package:hiking_app/MatchesScreen.dart';
-import 'signup.dart';
-import 'loginpage.dart';
-import 'homepage.dart';
+import 'Pages/SignupPage.dart';
+import 'Pages/loginpage.dart';
+import 'Pages/homepage.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async{

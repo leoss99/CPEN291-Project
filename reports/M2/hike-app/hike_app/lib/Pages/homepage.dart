@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hiking_app/HikeObject.dart';
-import 'package:hiking_app/HikesScreen.dart';
-import 'package:hiking_app/ProfileScreen.dart';
-import 'package:hiking_app/MatchesScreen.dart';
-//import 'signup.dart';
+import 'package:hiking_app/Pages/HikesScreen.dart';
+import 'package:hiking_app/Pages/ProfileScreen.dart';
+import 'package:hiking_app/Pages/MatchesScreen.dart';
+//import 'SignupPage.dart';
 //import 'loginpage.dart';
 class HomePage extends StatefulWidget {
 
