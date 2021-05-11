@@ -5,6 +5,7 @@ import 'package:flutter_tags/flutter_tags.dart';
 
 class ProfileScreen extends StatefulWidget{
   ProfileData userPreferences;
+
   ProfileScreen({Key key, this.userPreferences}): super(key: key);
 
   @override
@@ -46,7 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(height: 15),
                   Text(
                     // TODO: Allow user to change username, save username for sending to backend
-                    'Tom Cruise',
+                    widget.userPreferences.username,
                     style: TextStyle(
                         fontSize: 30.0,
                         fontWeight: FontWeight.bold,
@@ -253,37 +254,23 @@ class _ProfileSelectorState extends State<ProfileSelector> {
 /// Data object for storing selected preferences on profile page
 class ProfileData {
 
-  // TODO: When sending preferences to API, put in the form:
-  // {'username', 'distanceMin', 'distanceMax', elevationMin', 'elevationMax', 'easy', 'medium', 'hard'}
-
   // Username for identifying user, possibly randomly generated uid?
   String username;
   // For preferences, include results that match any selected value
   RangeValues prefDistance;
   RangeValues prefElevation;
   bool prefEasy, prefMod, prefHard;
-  // For tags, exclude any results that don't match all selected values
-  List<bool> tagSelected;
-  List<String> tagLabels;
 
-  ProfileData({this.prefDistance = const RangeValues(0, 100), this.prefElevation = const RangeValues(0, 1000),
-      this.prefEasy = true, this.prefMod = true, this.prefHard = true, this.tagLabels, this.tagSelected}) {
+  ProfileData({this.username = 'Tom Cruise', this.prefDistance = const RangeValues(0, 100), this.prefElevation = const RangeValues(0, 1000),
+      this.prefEasy = true, this.prefMod = true, this.prefHard = true});
 
-    if (tagLabels == null) {
-      // no tags have been provided, make default list
-      this.tagLabels = [
-        'Bike-friendly', 'Child-friendly', 'Dog-friendly', 'Wheelchair-accessible', 'Picnic'
-      ];
-    }
-
-    if (tagSelected == null) {
-      // Not specified which tags are selected, default set all unselected
-      this.tagSelected = List<bool>.filled(this.tagLabels.length, false);
-    }
-
-    assert(tagSelected.length == tagLabels.length);
-    print(tagLabels);
+  /// Function for converting a ProfileData object to JSON format
+  /// {'username', 'distanceMin', 'distanceMax', elevationMin', 'elevationMax', 'easy', 'medium', 'hard'}
+  Map<String,dynamic> toJson() {
+    return {'username':this.username, 'distanceMin': this.prefDistance.start, 'distanceMax': this.prefDistance.end,
+      'elevationMin': this.prefElevation.start, 'elevationMax': this.prefElevation.end, 'easy': this.prefEasy, 'medium': this.prefMod, 'hard': this.prefHard};
   }
+
 }
 
 
