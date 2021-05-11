@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hiking_app/HikeObject.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:hiking_app/main.dart';
 
 class MatchesScreen extends StatefulWidget{
@@ -90,6 +91,7 @@ class _MatchesScreenState extends State<MatchesScreen> {
                                 onPressed: (){
                                   // TODO: Implement "View on AllTrails", take user to browser
                                   //String hikeURL = 'https://www.alltrails.com/trail/canada/british-columbia/' + widget.matches[index].hikeName;
+                                  launch(currentHike.url);
                                   print("Button Pressed! Link to hike is: ${currentHike.url}");
                                 }
                             ),
@@ -176,5 +178,4 @@ class TwoToneText extends StatelessWidget {
       ),
     );
   }
-
 }
