@@ -28,6 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if(FirebaseAuth.instance.currentUser.photoURL != null){
       photoURL = FirebaseAuth.instance.currentUser.photoURL;
     }
+    widget.userPreferences.username = FirebaseAuth.instance.currentUser.uid;
     return new Scaffold(
     body: SingleChildScrollView(
       child: new Stack(
@@ -326,6 +327,7 @@ class ProfileData {
   /// API post call to send user preferences to backend
   void postPreferences() async {
     // Temporary call to stand-in api
+    print("Username: " + this.username);
     StandInAPI.postPrefsNoAPI(jsonEncode(this.toJson()));
 
     // Uri postUri = Uri.parse('http://127.0.0.1:5000/user/${this.username}');
