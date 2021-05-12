@@ -79,6 +79,8 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
   @override
   Widget build(BuildContext context){
     CardController controller;
+    if(widget.unratedHikes.length == 0)
+      _getHikes(widget.unratedHikes);
       return Scaffold(
           body: Stack(
             children: [

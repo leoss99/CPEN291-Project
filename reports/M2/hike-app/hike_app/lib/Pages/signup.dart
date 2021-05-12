@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hiking_app/services/databaseservice.dart';
 import 'package:hiking_app/services/usermanagement.dart';
 
 class SignupPage extends StatefulWidget {
@@ -12,6 +13,7 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   String _email;
   String _password;
+  String name;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,19 @@ class _SignupPageState extends State<SignupPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              TextField(
+                  decoration: InputDecoration(
+                      hintText: 'Name'
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      name = value;
+                    });
+                  }
+              ),
+              SizedBox(
+                  height: 15.0
+              ),
               TextField(
                   decoration: InputDecoration(
                       hintText: 'Email'
@@ -53,8 +68,11 @@ class _SignupPageState extends State<SignupPage> {
                   FirebaseAuth.instance.createUserWithEmailAndPassword(
                       email: _email,
                       password: _password
-                  ).then((userCredential){
-                      UserManagement().storeNewUser(userCredential.user, context);
+                  ).then((userCredential) async {
+                      UserManagement().storeNewUser(userCredential.user,name, context);
+                      FirebaseAuth.instance.currentUser.updateProfile(displayName: name);
+                      await DatabaseService(uid: userCredential.user.uid).updateUserName(name);
+                      await DatabaseService(uid: userCredential.user.uid).updateUserData(0,100,0,1000, false, false, false);
                       Navigator.of(context).pushReplacementNamed('/homepage');
                   })
                       .catchError((e) {
