@@ -11,6 +11,7 @@ RELEVANT_WORDS = ["Dogs on leash", "Kid friendly", "Hiking", "Views", "Nature tr
 
 class User():
 	def  __init__(self, username, length_min, length_max, gain_min, gain_max, easy, moderate, hard):
+		self.new_user = True
 		self.username = username
 		self.length_min = length_min
 		self.length_max = length_max
@@ -66,9 +67,9 @@ class User():
 			if RELEVANT_WORDS[i - 9] in hike.keywords:
 				self.attributes[i] = (self.attributes[i]*(self.num_reviews - 1) + 1)/(self.num_reviews)
 
-	def get_recommended_hike(self):
+	def get_recommended_hike(self, numb):
 		rec = self.available_hikes[0]
-		if (len(self.liked_hikes) != 0):
+		if (len(self.liked_hikes) != 0 or not self.new_user):
 			max_cos_sim = 0
 			for hike in self.available_hikes:
 				cos_sim = dot(hike.attributes, self.attributes)/(norm(hike.attributes)*norm(self.attributes))
@@ -79,6 +80,7 @@ class User():
 		self.available_hikes.remove(rec)
 		return rec
 
+	def 
 
 
 class Hike():
