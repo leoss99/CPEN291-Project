@@ -5,9 +5,11 @@ class HikeObject {
   String hikeName; // Name of hike, such as garibaldi-lake-trail
   String url; // TODO: Is this needed? URL is always the same with hike name appended
   List<String> images; // URLs of images. If image is missing, URL is null
-  String rating; // Either 'liked', 'disliked', or 'unrated'
+  bool isRated; // True if rated, else false
+  bool isLiked; // True if liked, else false
 
   // Extra details for displaying on matches page
+  int rating;
   String difficulty;
   String length;
   String gain;
@@ -17,19 +19,20 @@ class HikeObject {
   List<String> keywords;
 
 
-  HikeObject({this.hikeName, this.images, this.rating = 'unrated'});
+  HikeObject({this.hikeName, this.images, this.isRated = false, this.isLiked = false});
 
 
   /// Creates a new HikeObject from a map decoded from a JSON object
   // {'name', 'location', 'difficulty', 'length', 'gain', 'hiketype', 'url', 'img_1', 'img_2', 'img_3', 'keywords'}
   HikeObject.fromJson(Map<String,dynamic> json) {
-    this.hikeName = json['name'];
+    this.hikeName = json['name']; // hyphenated hike name
     this.length = json['length'];
     this.difficulty = json['difficulty'];
     this.location = json['location'];
     this.gain = json['gain'];
     this.hikeType = json['hiketype'];
     this.url = json['url'];
+    this.rating = json['rating'];
 
     this.images = [];
     if (json['img_1'] != null)
@@ -42,12 +45,13 @@ class HikeObject {
 
     this.keywords = json['keywords'];
 
-    this.rating = "unrated";
+    this.isLiked = false;
+    this.isRated = false;
   }
 
   /// Prepares a HikeObject to be encoded in JSON format
-  Map<String,String> toJson() {
-    return {'name':this.hikeName, 'rating': this.rating};
+  Map<String,dynamic> toJson() {
+    return {'hike_id':this.hikeName, 'like': this.isLiked};
   }
 
   /// Returns the hike name, capitalized and hyphen-free

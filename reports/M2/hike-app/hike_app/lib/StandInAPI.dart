@@ -29,4 +29,9 @@ class StandInAPI {
     print(hikes);
   }
 
+  static void postPrefsNoAPI(String prefs) {
+    print("User preferences posted");
+    print(prefs);
+  }
+
 }

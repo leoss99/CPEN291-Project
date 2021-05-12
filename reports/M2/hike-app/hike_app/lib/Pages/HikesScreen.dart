@@ -3,7 +3,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hiking_app/Pages/ProfileScreen.dart';
 import 'package:hiking_app/StandInAPI.dart';
+import 'package:hiking_app/Pages/homepage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_tindercard/flutter_tindercard.dart';
 import 'package:hiking_app/main.dart';
@@ -16,7 +18,8 @@ class HikesScreen extends StatefulWidget {
   List<HikeObject> unratedHikes;
   List<HikeObject> ratedHikes;
   List<HikeObject> matchedHikes;
-  HikesScreen({Key key, this.unratedHikes, this.ratedHikes, this.matchedHikes}): super(key: key);
+  ProfileData userPreferences;
+  HikesScreen({Key key, this.unratedHikes, this.ratedHikes, this.matchedHikes, this.userPreferences}): super(key: key);
 
   @override
   _HikesScreenState createState() => _HikesScreenState();
@@ -39,10 +42,12 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
     // Add the new hike objects to the list of unrated hikes
     unratedHikes.addAll(newHikes);
 
-    // final hikeAPIUrl = 'http://mock-json-service.glitch.me/';
+
+
+    // Uri hikeAPIUrl = Uri.parse('http://127.0.0.1:5000/hike/${widget.userPreferences.username}');
     // final response = await http.get(hikeAPIUrl);
     //
-    // if (response.statusCode == 200) {
+    // if (response.statusCode != 404) {
     //   // If response was successful, parse json object and add hikes to unrated list
     //   List jsonResponse = json.decode(response.body);
     //   List<HikeObject> newHikes = jsonResponse.map((hike) => HikeObject.fromJson(hike)).toList();
@@ -52,28 +57,23 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
     // }
   }
 
-  /// Method for posting hikes to backend
-  void _postHikes(List<HikeObject> ratedHikes) async {
-    // Convert HikeObjects to Maps, save in list
-    List hikes = ratedHikes.map((hike) => hike.toJson()).toList();
-    String jsonHikes = jsonEncode(hikes);
+  /// Method for posting a single hike to the backend
+  void _postHike(HikeObject ratedHike) async {
 
-    // final hikeAPIUrl = 'http://mock-json-service.glitch.me/';
-    // final response = await http.get(hikeAPIUrl);
+    // Uri hikeAPIUrl = Uri.parse('http://127.0.0.1:5000/hike/${widget.userPreferences.username}');
+    // final response = await http.post(hikeAPIUrl, body: ratedHike.toJson());
     //
-    // if (response.statusCode == 200) {
+    // if (response.statusCode == 202) {
     //   // If response was successful, parse json object and add hikes to unrated list
-    //   List jsonResponse = json.decode(response.body);
-    //   List<HikeObject> newHikes = jsonResponse.map((hike) => HikeObject.fromJson(hike)).toList();
-    //   unratedHikes.addAll(newHikes);
+    //   print("Post successful");
     // } else {
     //   throw Exception('failed to load new hikes from API');
     // }
 
     // Until API is ready, use this temporary method to simulate the API call
-    StandInAPI.postHikesNoAPI(jsonHikes);
-    // If response is successful, clear the ratedHikes list
-    ratedHikes.clear();
+    String jsonHike = jsonEncode(ratedHike.toJson());
+    StandInAPI.postHikesNoAPI(jsonHike);
+
   }
 
   @override
@@ -258,27 +258,30 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
                         swipeCompleteCallback:
                             (CardSwipeOrientation orientation, int index) {
                           /// Get orientation & index of swiped card!
+                          HikeObject currentHike = widget.unratedHikes[index];
                           if (orientation == CardSwipeOrientation.RIGHT) {
                             // If swiped right, mark as liked and add to matches
-                            widget.unratedHikes[index].rating = 'liked';
-                            widget.matchedHikes.add(widget.unratedHikes[index]);
+                            currentHike.isLiked = true;
+                            currentHike.isRated = true;
+                            widget.matchedHikes.add(currentHike);
                           } else {
                             // Item was swiped left, mark as disliked
-                            widget.unratedHikes[index].rating = 'disliked';
+                            currentHike.isLiked = false;
+                            currentHike.isRated = true;
                           }
 
                           if (orientation != CardSwipeOrientation.RECOVER) {
-                            // If card was swiped, move the swiped card to the rated list
-                            widget.ratedHikes.add(widget.unratedHikes[index]);
+                            // If card was swiped, move the swiped card to the rated list and post the rating to API
+                            widget.ratedHikes.add(currentHike);
+                            _postHike(currentHike);
                             widget.unratedHikes.remove(
-                                widget.unratedHikes[index]);
+                                currentHike);
 
                             // Check if we need to get more hikes
                             if (widget.unratedHikes.length == 0) {
                               // Make API calls to get more hikes and send back rated hikes
                               setState(() {
                                 _getHikes(widget.unratedHikes);
-                                _postHikes(widget.ratedHikes);
                               });
                             }
                           }

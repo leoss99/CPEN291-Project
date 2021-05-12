@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'file:///F:/project-team-ornithomimus/reports/M2/hike-app/hike_app/lib/Pages/selectprofilepicture.dart';
+import 'Pages/selectprofilepicture.dart';
 import 'Pages/signup.dart';
 import 'Pages/loginpage.dart';
 import 'Pages/homepage.dart';

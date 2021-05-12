@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
     matchedHikes = [];
 
     profileScreen = ProfileScreen(userPreferences: userPreferences,);
-    hikesScreen = HikesScreen(matchedHikes: matchedHikes, unratedHikes: unratedHikes, ratedHikes: ratedHikes,);
+    hikesScreen = HikesScreen(matchedHikes: matchedHikes, unratedHikes: unratedHikes, ratedHikes: ratedHikes, userPreferences: userPreferences,);
     matchesScreen = MatchesScreen(matches: matchedHikes,);
 
     _children = [
@@ -52,8 +52,13 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+
   void onTabTapped(int index) {
     setState(() {
+      // If the user is moving away from the profile screen, post user preferences to API
+      if (_currentIndex == 0) {
+        userPreferences.postPreferences();
+      }
       _currentIndex = index;
     });
   }
