@@ -1,5 +1,5 @@
 good job team. Seems like you are almost finished.
  For combining the two models try different methods 
  and choose the one that gives the best result. For 
- example, try the method you mentioned in your report and well as
+ example, try the method you mentioned in your report as well as
  using both models in an ensemble. etc.
