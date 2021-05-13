@@ -3,11 +3,19 @@ from numpy import dot
 from numpy.linalg import norm
 from imageclassifier import ImageClassifier
 
+#Global variable that acts as a "database" to store the hike information. Is automatically populated when the server starts
 hikes = []
+
+#Global variable that acts as a "database" to store new user information. Gets populated when a new user is added
+#(*note will reset user information everytime database is started)
 users = []
+
+#Longest possible gain, hike length, and rating
 MAX_GAIN = 4026
 MAX_LENGTH = 76
 MAX_RATING = 5
+
+#Top 10 relevant keywords to look for in the embedding
 RELEVANT_WORDS = ["Dogs on leash", "Kid friendly", "Hiking", "Views", "Nature trips", "Forest", "Waterfall", "River", "Lake", "Camping"]
 
 class User():
@@ -26,14 +34,16 @@ class User():
 		self.liked_hikes = []
 		#Hikes that have been disliked
 		self.disliked_hikes = []
-		#Hikes that are available to be recommended (have not been seen before)
+		#The user attribute list, which is updated after every time a hike is reviewed
 		self.attributes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
+		#Filtered "available" hikes based on the initial user preferences
 		self.available_hikes = [hike for hike in hikes if ((hike.difficulty == "easy" and self.easy == True) or (
 			hike.difficulty == "moderate" and self.moderate == True) or (hike.difficulty == "hard" and self.hard == True) and 
 		hike.length >= self.length_min and hike.length <= self.length_max and hike.gain >= self.gain_min and hike.gain <= self.gain_max)]
 
 
+	# Function to review a hike. Adds to either "liked" or "disliked" list and updates the user attribute list
 	def review_hike(self, hike, like):
 		self.num_reviews = self.num_reviews + 1
 		if like is False:
@@ -68,6 +78,8 @@ class User():
 			if RELEVANT_WORDS[i - 9] in hike.keywords:
 				self.attributes[i] = (self.attributes[i]*(self.num_reviews - 1) + 1)/(self.num_reviews)
 
+	#Prepares a shortlist of 'numb' amount of hikes. Sends back the most similar hikes based on cosine similarity
+	#(note* if user is new and has not reviewed any hikes, will just send random hikes). 
 	def get_shortlist_hike(self, numb):
 		shortlist = []
 		cos_list = []
@@ -80,12 +92,13 @@ class User():
 				shortlist.append(tup[0])
 		else:
 			shortlist = self.available_hikes
-			for hike in shortlist[-numb:]:
-				self.available_hikes.remove(hike)
+		for hike in shortlist[-numb:]:
+			self.available_hikes.remove(hike)
 
 
 		return shortlist[-numb:]
 
+	#Polls the image classifier for a list of recommended hikes using the image classifier
 	def get_recommended_hikes(self):
 		#If user is new, return 10 random hikes
 		if self.new_user:
