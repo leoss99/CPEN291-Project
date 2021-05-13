@@ -8,22 +8,26 @@ from PIL import Image
 import shutil
 
 class ImageClassifier():
-	def __init__(self, input_hikes, liked_hikes, disliked_hikes):
-		self.input_hikes = input_hikes
+	def __init__(self, in_hikes, liked_hikes, disliked_hikes):
+		self.input_hikes = []
+		self.in_hikes = in_hikes
+		for hike in in_hikes:
+			self.input_hikes.append(hike.hike_id)
+
 		self.liked_hikes = liked_hikes
 		self.disliked_hikes = disliked_hikes
 		self.recommended_hikes = []
-		self.model
-		self.device
-		self.optimizer
-		self.scheduler
-		self.criterion
-		self.dataset_train
-		self.dataset_test
-		self.loader_train
-		self.loader_test
+		self.model = None
+		self.device = None
+		self.optimizer = None
+		self.scheduler = None
+		self.criterion = None
+		self.dataset_train = None
+		self.dataset_test = None
+		self.loader_train = None
+		self.loader_test = None
 
-	def label_image(img_name,label):
+	def label_image(self, img_name,label):
 		source_dir = "291_test_dataset/unrated"
 		if not(os.path.isfile(f"{source_dir}/{img_name}.jpg")):
 		    # If an image is missing from a hike, ignore it
@@ -34,23 +38,23 @@ class ImageClassifier():
 		    target_dir = "291_test_dataset/full_dataset/dislikes"
 		shutil.move(f"{source_dir}/{img_name}.jpg", target_dir)
 
-	def label_hike(hike_name, label):
+	def label_hike(self, hike_name, label):
 		for i in range(3):
 		    image_name = hike_name + '-' + str(i)
-		    label_image(image_name, label)
+		    self.label_image(image_name, label)
 
 	def label_hikes(self):
-		label_liked_hikes()
-		label_disliked_hikes()
+		self.label_liked_hikes()
+		self.label_disliked_hikes()
 
 
 	def label_liked_hikes(self):
 		for i in range(len(self.liked_hikes)):
-			label_hike(liked_hikes[i].hike_id, 1)
+			self.label_hike(self.liked_hikes[i], 1)
 
 	def label_disliked_hikes(self):
 		for i in range(len(self.disliked_hikes)):
-			label_hike(liked_hikes[i].hike_id, 0)
+			self.label_hike(self.disliked_hikes[i], 0)
 
 
 	def create_dataset(self):
@@ -65,8 +69,8 @@ class ImageClassifier():
 		rng = torch.Generator().manual_seed(3621)
 		self.dataset_train, self.dataset_test = torch.utils.data.random_split(dataset_full, [n_train, n_test], rng)
 
-		self.loader_train = torch.utils.data.DataLoader(dataset_train, batch_size = 4, shuffle=True)
-		self.loader_test = torch.utils.data.DataLoader(dataset_test, batch_size = 4, shuffle=True)
+		self.loader_train = torch.utils.data.DataLoader(self.dataset_train, batch_size = 4, shuffle=True)
+		self.loader_test = torch.utils.data.DataLoader(self.dataset_test, batch_size = 4, shuffle=True)
 
 	def create_model(self):
 		self.model = models.resnet18(pretrained=True)
@@ -103,7 +107,7 @@ class ImageClassifier():
 	  loss, correct = 0, 0
 	  model.eval()
 	  with torch.no_grad():
-	    for samples, labels in loader_test:
+	    for samples, labels in self.loader_test:
 	      samples = samples.to(self.device)
 	      labels = labels.to(self.device)
 	      outs = model(samples)
@@ -115,8 +119,8 @@ class ImageClassifier():
 
 	def run_all(self, n_epochs):
 	  for epoch in range(n_epochs):
-	    loss_train, acc_train = run_train(self.model, self.optimizer, self.scheduler)
-	    loss_test, acc_test = run_test(self.model)
+	    loss_train, acc_train = self.run_train(self.model, self.optimizer, self.scheduler)
+	    loss_test, acc_test = self.run_test(self.model)
 	    print(f"epoch {epoch}: train loss {loss_train:.4f} acc {acc_train:.4f}, test loss {loss_test:.4f} acc {acc_test:.4f}")
 
 	def predict_image_score(self, img_name):
@@ -132,7 +136,7 @@ class ImageClassifier():
 	    img_transform = transforms.Compose([transforms.Resize((224,224)), transforms.ToTensor()])
 	    img = img_transform(pil_img) # Transform image
 
-	    model.eval()
+	    self.model.eval()
 	    with torch.no_grad():
 	        img = img.to(self.device).unsqueeze(0) # Add a dimension so the model can use it
 	        out = self.model(img)
@@ -140,7 +144,7 @@ class ImageClassifier():
 
 	# Given a single image in the unrated folder, predict how the user will rate it
 	def classify_image(self, img_name):
-	    score = predict_image_score(self.model, img_name)
+	    score = predict_image_score(img_name)
 	    _, pred = torch.max(score, 1)
 	    return pred.item()
 
@@ -153,11 +157,11 @@ class ImageClassifier():
 	        if not(os.path.isfile(f"{source_dir}/{image_name}.jpg")):
 	            continue
 	        # Predict the score 
-	        image_scores += predict_image_score(self.model, image_name)
+	        image_scores += self.predict_image_score(image_name)
 	    
 	    # If there are no images found, return dislike
 	    if (len(image_scores) == 0):
-	        return 0
+	    	return 0
 
 	    # Combine the predicted scores for all images, then predict class based on the mean score
 	    score_tensor = torch.stack(image_scores)
@@ -169,5 +173,24 @@ class ImageClassifier():
 
 	def classify_recommended_hikes(self):
 		for hike_id in self.input_hikes:
-			classify_hike(hike_id)
+			if (self.classify_hike(hike_id) == 1):
+				hike = next((hike for hike in self.in_hikes if hike.hike_id == hike_id), None)
+				self.recommended_hikes.append(hike)
+
+
+	def run(self):
+		#Label the hikes and images
+		self.label_hikes()
+		#Create the dataset based on the inputs
+		self.create_dataset()
+		#Create the model to be used
+		self.create_model()
+		#Run the testing/training (won't need to run training in future examples)
+		self.run_all(5)
+		#Classify the recommended hikes
+		self.classify_recommended_hikes()
+
+		return self.recommended_hikes
+
+
 

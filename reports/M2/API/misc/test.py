@@ -16,9 +16,8 @@ def test_user_get():
 
 
 #Tests to see if it returns a hike
-def test_review_post():
+def test_review_post(PARAMS):
 	arg = "taylor-mcouat"
-	PARAMS = {'hike_id': 'wapta-falls', 'like': 'True'}
 	response = requests.post(BASE + "review/" + arg, PARAMS)
 	print(response)
 
@@ -48,8 +47,28 @@ def test_hike_get():
 
 test_user_post()
 test_user_get()
-test_review_post()
-test_review_get()
 test_hike_get()
-test_review_post2()
+test_review_post(PARAMS = {'hike_id': 'wapta-falls', 'like': 'True'})
+test_review_post(PARAMS = {'hike_id': 'stanley-park-seawall-trail', 'like': 'False'})
+test_review_post(PARAMS = {'hike_id': 'teapot-hill', 'like': 'True'})
+test_review_post(PARAMS = {'hike_id': 'tonquin-trail', 'like': 'True'})
+test_review_post(PARAMS = {'hike_id': 'mount-wells-summit-trail', 'like': 'True'})
+test_review_post(PARAMS = {'hike_id': 'mount-boucherie-from-east-boundary-road', 'like': 'False'})
+test_review_post(PARAMS = {'hike_id': 'tynehead-regional-park', 'like': 'False'})
+test_review_post(PARAMS = {'hike_id': 'heart-lake-loop', 'like': 'False'})
+test_review_post(PARAMS = {'hike_id': 'rooster-tree-lake-loop', 'like': 'True'})
+test_review_post(PARAMS = {'hike_id': 'mount-finlayson-trail', 'like': 'True'})
+test_review_post(PARAMS = {'hike_id': 'lesser-garibaldi-lake', 'like': 'False'})
+test_hike_get()
+test_review_post(PARAMS = {'hike_id': 'hoover-lake-loop-via-lookout', 'like': 'True'})
+test_review_post(PARAMS = {'hike_id': 'goldstream-falls-from-goldstream-campground', 'like': 'False'})
+test_review_post(PARAMS = {'hike_id': 'lightning-lakes-chain-trail-to-thunder-lake', 'like': 'True'})
+test_review_post(PARAMS = {'hike_id': 'broom-hill-via-ogre-loop', 'like': 'True'})
+test_review_post(PARAMS = {'hike_id': 'gowlland-tod-trail', 'like': 'True'})
+test_review_post(PARAMS = {'hike_id': 'community-forest-canyon-loop-trails', 'like': 'True'})
+test_review_post(PARAMS = {'hike_id': 'endurance-ridge-trail', 'like': 'False'})
+test_review_post(PARAMS = {'hike_id': 'lakit-lookout', 'like': 'False'})
+test_review_post(PARAMS = {'hike_id': 'bellamy-to-mckenzie-creek-trail-loop', 'like': 'False'})
+test_review_post(PARAMS = {'hike_id': 'hollyburn-peak-and-first-lake', 'like': 'False'})
+test_review_post(PARAMS = {'hike_id': 'skaha-lake-via-kvr-ponderosa-and-kettle-valley-rail-trail', 'like': 'False'})
 test_hike_get()

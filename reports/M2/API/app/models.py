@@ -1,6 +1,7 @@
 from flask import jsonify
 from numpy import dot
 from numpy.linalg import norm
+from imageclassifier import ImageClassifier
 
 hikes = []
 users = []
@@ -67,20 +68,34 @@ class User():
 			if RELEVANT_WORDS[i - 9] in hike.keywords:
 				self.attributes[i] = (self.attributes[i]*(self.num_reviews - 1) + 1)/(self.num_reviews)
 
-	def get_recommended_hike(self, numb):
-		rec = self.available_hikes[0]
-		if (len(self.liked_hikes) != 0 or not self.new_user):
-			max_cos_sim = 0
+	def get_shortlist_hike(self, numb):
+		shortlist = []
+		cos_list = []
+		if (len(self.liked_hikes) != 0):
 			for hike in self.available_hikes:
 				cos_sim = dot(hike.attributes, self.attributes)/(norm(hike.attributes)*norm(self.attributes))
-				if (cos_sim > max_cos_sim):
-					rec = hike
-					max_cos_sim = cos_sim
+				cos_list.append((hike, cos_sim))
+			cos_list.sort(key = lambda x: x[1])
+			for tup in cos_list:
+				shortlist.append(tup[0])
+		else:
+			shortlist = self.available_hikes
+			for hike in shortlist[-numb:]:
+				self.available_hikes.remove(hike)
 
-		self.available_hikes.remove(rec)
-		return rec
 
-	def 
+		return shortlist[-numb:]
+
+	def get_recommended_hikes(self):
+		#If user is new, return 10 random hikes
+		if self.new_user:
+			self.new_user = False
+			return self.get_shortlist_hike(10)
+		else:
+			ic = ImageClassifier(self.get_shortlist_hike(50), self.liked_hikes, self.disliked_hikes)
+			recommended_hikes = ic.run()
+			return recommended_hikes
+
 
 
 class Hike():

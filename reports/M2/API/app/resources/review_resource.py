@@ -7,12 +7,12 @@ from models import Hike, User, hikes, users
 resource_fields = {
 	'username': fields.String,
 	'hike_id': fields.String,
-	'like': fields.Boolean
+	'like': fields.String
 	}
 
 review_put_args = reqparse.RequestParser()
 review_put_args.add_argument("hike_id", type=str, help="Hike ID required for review", required=True)
-review_put_args.add_argument("like", type=bool, help="Like status required for review", required=True)
+review_put_args.add_argument("like", type=str, help="Like status required for review", required=True)
 
 review_get_args = reqparse.RequestParser()
 review_get_args.add_argument("hike_id", type=str, help="Hike ID required for review", required=True)
@@ -38,7 +38,12 @@ class ReviewResource(Resource):
 	def post(self, username):
 		args = review_put_args.parse_args()
 		hike_id = args['hike_id']
-		like = bool(args['like'])
+		print(args['like'])
+		print(args['hike_id'])
+		if (args['like'] == 'True'):
+			like = True
+		else:
+			like = False
 		#Searches for associated user in user list
 		review_user = [user for user in users if user.username == username]
 		#Searches for associated hike in hike list

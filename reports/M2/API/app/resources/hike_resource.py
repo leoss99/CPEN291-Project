@@ -27,7 +27,7 @@ class HikeResource(Resource):
 			abort(404, message="Could not find a user with that username")
 		else:
 			hike_dicts = []
-			for i in range(0, 10):
-				hike_dicts.append(userlist[0].get_recommended_hike())
+			hike_dicts = userlist[0].get_recommended_hikes()
+			print(len(hike_dicts))
 		return hike_dicts
 
