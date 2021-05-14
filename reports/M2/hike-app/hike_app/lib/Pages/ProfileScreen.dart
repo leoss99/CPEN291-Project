@@ -7,6 +7,7 @@ import 'package:flutter_tags/flutter_tags.dart';
 import 'package:hiking_app/services/databaseservice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hiking_app/StandInAPI.dart';
+import 'package:hiking_app/HikeObject.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -320,8 +321,8 @@ class ProfileData {
   /// Function for converting a ProfileData object to JSON format
   /// {'username', 'distanceMin', 'distanceMax', elevationMin', 'elevationMax', 'easy', 'medium', 'hard'}
   Map<String,dynamic> toJson() {
-    return {'length_min': this.prefDistance.start, 'length_max': this.prefDistance.end, 'gain_min': this.prefElevation.start,
-      'gain_max': this.prefElevation.end, 'easy': this.prefEasy, 'moderate': this.prefMod, 'hard': this.prefHard};
+    return {'length_min': this.prefDistance.start.toString(), 'length_max': this.prefDistance.end.toString(), 'gain_min': this.prefElevation.start.toString(),
+      'gain_max': this.prefElevation.end.toString(), 'easy': this.prefEasy.toString().inCaps, 'moderate': this.prefMod.toString().inCaps, 'hard': this.prefHard.toString().inCaps};
   }
 
   /// API post call to send user preferences to backend
@@ -334,7 +335,7 @@ class ProfileData {
 
     Uri postUri = Uri.parse('http://10.0.2.2:5000/user/${this.username}');
 
-    var response = await http.post(postUri, body: jsonEncode(this.toJson()));
+    var response = await http.post(postUri, body: this.toJson());
     if (response.statusCode == 409)
       print("User already exists");
     if (response.statusCode == 202)

@@ -49,6 +49,7 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
 
     if (response.statusCode != 404) {
       print("Status code is not 404");
+      print("Status code: "+ response.statusCode.toString());
       // If response was successful, parse json object and add hikes to unrated list
       List jsonResponse = json.decode(response.body);
       List<HikeObject> newHikes = jsonResponse.map((hike) => HikeObject.fromJson(hike)).toList();
