@@ -1,7 +1,8 @@
 from flask_restful import Resource, reqparse, abort, fields, marshal_with
 import random
-from flask import jsonify
+from flask import jsonify, request
 from models import Hike, User, hikes, users
+import json
 
 
 resource_fields = {
@@ -10,18 +11,19 @@ resource_fields = {
 	'like': fields.String
 	}
 
-review_put_args = reqparse.RequestParser()
-review_put_args.add_argument("hike_id", type=str, help="Hike ID required for review", required=True)
-review_put_args.add_argument("like", type=str, help="Like status required for review", required=True)
+#review_put_args = reqparse.RequestParser()
+#review_put_args.add_argument("hike_id", type=str, help="Hike ID required for review", required=True)
+#review_put_args.add_argument("like", type=str, help="Like status required for review", required=True)
 
-review_get_args = reqparse.RequestParser()
-review_get_args.add_argument("hike_id", type=str, help="Hike ID required for review", required=True)
+#review_get_args = reqparse.RequestParser()
+#review_get_args.add_argument("hike_id", type=str, help="Hike ID required for review", required=True)
 
 class ReviewResource(Resource):
 	@marshal_with(resource_fields)
 	def get(self, username):
-		args = review_get_args.parse_args()
-		hike_id = args['hike_id']
+		json_data = request.get_json(force=True)
+		json_data = json.loads(json_data)
+		hike_id = json_data['hike_id']
 		review_user = [user for user in users if user.username == username]
 		if len(review_user) == 0:
 			abort(404, message="Could not find a user with that username")
@@ -33,14 +35,15 @@ class ReviewResource(Resource):
 				liked = False
 			else:
 				abort(404, message="Could not find that review")
-		return {'username': username, 'hike_id': hike_id, 'like': liked}
+		return jsonify({'username': username, 'hike_id': hike_id, 'like': liked})
 
 	def post(self, username):
-		args = review_put_args.parse_args()
-		hike_id = args['hike_id']
-		print(args['like'])
-		print(args['hike_id'])
-		if (args['like'] == 'True'):
+		json_data = request.get_json(force=True)
+		json_data = json.loads(json_data)
+		hike_id = json_data['hike_id']
+		print(json_data['like'])
+		print(json_data['hike_id'])
+		if (json_data['like'] == 'True'):
 			like = True
 		else:
 			like = False

@@ -103,11 +103,12 @@ class User():
 		#If user is new, return 10 random hikes
 		if self.new_user:
 			self.new_user = False
-			return self.get_shortlist_hike(10)
+			recommended_hikes = self.get_shortlist_hike(10)
 		else:
 			ic = ImageClassifier(self.get_shortlist_hike(50), self.liked_hikes, self.disliked_hikes)
 			recommended_hikes = ic.run()
-			return recommended_hikes
+
+		return recommended_hikes
 
 
 
