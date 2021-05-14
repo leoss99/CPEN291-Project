@@ -144,7 +144,7 @@ class ImageClassifier():
 
 	# Given a single image in the unrated folder, predict how the user will rate it
 	def classify_image(self, img_name):
-	    score = predict_image_score(img_name)
+	    score = self.predict_image_score(img_name)
 	    _, pred = torch.max(score, 1)
 	    return pred.item()
 
