@@ -328,20 +328,29 @@ class ProfileData {
   /// API post call to send user preferences to backend
   void postPreferences() async {
     // Temporary call to stand-in api
-    // print("Username: " + this.username);
-    // StandInAPI.postPrefsNoAPI(jsonEncode(this.toJson()));
+    print("Username: " + this.username);
+    StandInAPI.postPrefsNoAPI(jsonEncode(this.toJson()));
 
-    print("Posting preferences to username: " + this.username);
-
-    Uri postUri = Uri.parse('http://10.0.2.2:5000/user/${this.username}');
-
-    var response = await http.post(postUri, body: this.toJson());
-    if (response.statusCode == 409)
-      print("User already exists");
-    if (response.statusCode == 202)
-      print("Success posting preferences");
-
-    print("Status code: " + response.statusCode.toString());
+    // print("Posting preferences to username: " + this.username);
+    //
+    // Uri postUri = Uri.parse('http://10.0.2.2:5000/user/taylor-mcouat');
+    //
+    // var params = {'length_min': '0', 'length_max': '1000', 'gain_min': '0', 'gain_max': '1000', 'easy': 'False', 'moderate': 'True', 'hard': 'False'};
+    // print(jsonEncode(params));
+    // var response = await http.post(postUri, body: jsonEncode(params));
+    // //var response = await http.post(postUri, body: this.toJson());
+    // if (response.statusCode == 409)
+    //   print("User already exists");
+    // if (response.statusCode == 202)
+    //   print("Success posting preferences");
+    //
+    // print("Status code: " + response.statusCode.toString());
+    
+    // testing
+    // Uri postUri = Uri.parse('http://10.0.2.2:5000/user/${this.username}');
+    // var response = await http.get(postUri);
+    // print("Status code: " + response.statusCode.toString());
+    // print("Response: " + response.body);
   }
 
   ProfileData.fromSnapshot(Map<String, dynamic> snapshot){

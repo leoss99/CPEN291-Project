@@ -34,49 +34,49 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
   /// Method for getting hikes from backend
   void _getHikes(List<HikeObject> unratedHikes) async {
 
-    // // Until API is ready, use a temporary method to simulate the API call
-    // String tempAPIResponse = StandInAPI.getHikesNoAPI();
-    // // Decode the json string and make hike objects
-    // List jsonResponse = json.decode(tempAPIResponse);
-    // List<HikeObject> newHikes = jsonResponse.map((hike) => HikeObject.fromJson(hike)).toList();
-    // // Add the new hike objects to the list of unrated hikes
-    // unratedHikes.addAll(newHikes);
+    // Until API is ready, use a temporary method to simulate the API call
+    String tempAPIResponse = StandInAPI.getHikesNoAPI();
+    // Decode the json string and make hike objects
+    List jsonResponse = json.decode(tempAPIResponse);
+    List<HikeObject> newHikes = jsonResponse.map((hike) => HikeObject.fromJson(hike)).toList();
+    // Add the new hike objects to the list of unrated hikes
+    unratedHikes.addAll(newHikes);
 
 
-    print("getting hikes from username: " + widget.userPreferences.username);
-    Uri hikeAPIUrl = Uri.parse('http://10.0.2.2:5000/hike/${widget.userPreferences.username}');
-    final response = await http.get(hikeAPIUrl);
-
-    if (response.statusCode != 404) {
-      print("Status code is not 404");
-      print("Status code: "+ response.statusCode.toString());
-      // If response was successful, parse json object and add hikes to unrated list
-      List jsonResponse = json.decode(response.body);
-      List<HikeObject> newHikes = jsonResponse.map((hike) => HikeObject.fromJson(hike)).toList();
-      unratedHikes.addAll(newHikes);
-      print("Hikes added!");
-      print(unratedHikes.toString());
-    } else {
-      print("Error code: "+ response.statusCode.toString());
-      throw Exception('failed to load new hikes from API');
-    }
+    // print("getting hikes from username: " + widget.userPreferences.username);
+    // Uri hikeAPIUrl = Uri.parse('http://10.0.2.2:5000/hike/${widget.userPreferences.username}');
+    // final response = await http.get(hikeAPIUrl);
+    //
+    // if (response.statusCode != 404) {
+    //   print("Status code is not 404");
+    //   print("Status code: "+ response.statusCode.toString());
+    //   // If response was successful, parse json object and add hikes to unrated list
+    //   List jsonResponse = json.decode(response.body);
+    //   List<HikeObject> newHikes = jsonResponse.map((hike) => HikeObject.fromJson(hike)).toList();
+    //   unratedHikes.addAll(newHikes);
+    //   print("Hikes added!");
+    //   print(unratedHikes.toString());
+    // } else {
+    //   print("Error code: "+ response.statusCode.toString());
+    //   throw Exception('failed to load new hikes from API');
+    // }
   }
 
   /// Method for posting a single hike to the backend
   void _postHike(HikeObject ratedHike) async {
 
-    Uri hikeAPIUrl = Uri.parse('http://10.0.2.2:5000/review/${widget.userPreferences.username}');
-    final response = await http.post(hikeAPIUrl, body: jsonEncode(ratedHike.toJson()));
-
-    if (response.statusCode == 202) {
-      print("Post successful");
-    } else {
-      throw Exception('failed to post hike to API');
-    }
+    // Uri hikeAPIUrl = Uri.parse('http://10.0.2.2:5000/review/${widget.userPreferences.username}');
+    // final response = await http.post(hikeAPIUrl, body: jsonEncode(ratedHike.toJson()));
+    //
+    // if (response.statusCode == 202) {
+    //   print("Post successful");
+    // } else {
+    //   throw Exception('failed to post hike to API');
+    // }
     //
     // // Until API is ready, use this temporary method to simulate the API call
-    // String jsonHike = jsonEncode(ratedHike.toJson());
-    // StandInAPI.postHikesNoAPI(jsonHike);
+    String jsonHike = jsonEncode(ratedHike.toJson());
+    StandInAPI.postHikesNoAPI(jsonHike);
 
   }
 
