@@ -34,15 +34,15 @@ class UserResource(Resource):
 			return retval[0]
 
 	def post(self, username):
-		args = user_put_args.parse_args()
-		retval = [user for user in users if user.username == username]
-		if len(retval) != 0:
-			abort(409, message="User with that username already exists")
-		else:
-			newUser = User(username=username, length_min=args['length_min'], length_max=args['length_max'], gain_min=args['gain_min'],
-				gain_max=args['gain_max'], easy=args['easy'], moderate=args['moderate'], hard=args['hard'])
-			users.append(newUser)
-			return 202
+  		args = user_put_args.parse_args()
+  		retval = [user for user in users if user.username == username]
+  		if len(retval) != 0:
+  			abort(409, message="User with that username already exists")
+  		else:
+  			newUser = User(username=username, length_min=args['length_min'], length_max=args['length_max'], gain_min=args['gain_min'],
+  				gain_max=args['gain_max'], easy=args['easy'], moderate=args['moderate'], hard=args['hard'])
+  			users.append(newUser)
+  			return 202
 
 
 

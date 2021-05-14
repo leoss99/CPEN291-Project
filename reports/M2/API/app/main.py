@@ -30,7 +30,6 @@ api.add_resource(UserResource, "/user/<string:username>")
 #Review resource for a user to leave a review
 api.add_resource(ReviewResource, "/review/<string:username>")
 
-
 #Model for how individual Hikes will be stored in the database.
 #Hikes can be queried by the unique id.
 #More to be added later, depending on image-classifier

@@ -3,7 +3,8 @@
    <application
         android:label="hike_app"
         android:icon="@mipmap/ic_launcher"
-       android:name="androidx.multidex.MultiDexApplication">
+       android:name="androidx.multidex.MultiDexApplication"
+       android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

@@ -28,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if(FirebaseAuth.instance.currentUser.photoURL != null){
       photoURL = FirebaseAuth.instance.currentUser.photoURL;
     }
-    widget.userPreferences.username = FirebaseAuth.instance.currentUser.uid;
+    widget.userPreferences.username = FirebaseAuth.instance.currentUser.displayName;
     return new Scaffold(
     body: SingleChildScrollView(
       child: new Stack(
@@ -327,13 +327,20 @@ class ProfileData {
   /// API post call to send user preferences to backend
   void postPreferences() async {
     // Temporary call to stand-in api
-    print("Username: " + this.username);
-    StandInAPI.postPrefsNoAPI(jsonEncode(this.toJson()));
+    // print("Username: " + this.username);
+    // StandInAPI.postPrefsNoAPI(jsonEncode(this.toJson()));
 
-    // Uri postUri = Uri.parse('http://127.0.0.1:5000/user/${this.username}');
-    // var response = await http.post(postUri, body: this.toJson());
-    // if (response.statusCode == 409)
-    //   print("User already exists");
+    print("Posting preferences to username: " + this.username);
+
+    Uri postUri = Uri.parse('http://10.0.2.2:5000/user/${this.username}');
+
+    var response = await http.post(postUri, body: jsonEncode(this.toJson()));
+    if (response.statusCode == 409)
+      print("User already exists");
+    if (response.statusCode == 202)
+      print("Success posting preferences");
+
+    print("Status code: " + response.statusCode.toString());
   }
 
   ProfileData.fromSnapshot(Map<String, dynamic> snapshot){
