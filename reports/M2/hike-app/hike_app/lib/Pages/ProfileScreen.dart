@@ -291,12 +291,12 @@ class ProfileData {
 
   /// API post call to send user preferences to backend
   void postPreferences() async {
-
+    /*
     // Temporary call to stand-in api
     StandInAPI.postPrefsNoAPI(jsonEncode(this.toJson()));
+    */
 
 
-    /*
     // Post preferences to the backend to create a new user
     Uri postUri = Uri.parse('http://10.0.2.2:5000/user/${this.username}');
 
@@ -308,7 +308,7 @@ class ProfileData {
       print("User already exists");
     if (response.statusCode == 202)
       print("Success creating user");
-*/
+
   }
 
   ProfileData.fromSnapshot(Map<String, dynamic> snapshot){

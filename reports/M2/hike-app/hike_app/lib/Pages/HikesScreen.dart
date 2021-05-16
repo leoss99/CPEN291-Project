@@ -31,7 +31,7 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
   /// Method for getting hikes from backend
   void _getHikes(List<HikeObject> unratedHikes) async {
 
-
+    /*
     // This temporary method can be used to simulate the API call
     String tempAPIResponse = StandInAPI.getHikesNoAPI();
     // Decode the json string and make hike objects
@@ -39,9 +39,9 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
     List<HikeObject> newHikes = jsonResponse.map((hike) => HikeObject.fromJson(hike)).toList();
     // Add the new hike objects to the list of unrated hikes
     unratedHikes.addAll(newHikes);
+    */
 
 
-/*
     // Get new hikes from the API
     Uri hikeAPIUrl = Uri.parse('http://10.0.2.2:5000/hike/${widget.userPreferences.username}');
     final response = await http.get(hikeAPIUrl);
@@ -58,18 +58,18 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
       print("Status code: "+ response.statusCode.toString());
       throw Exception('Failed to load new hikes from API');
     }
-*/
+
   }
 
   /// Method for posting a single hike to the backend
   void _postHike(HikeObject ratedHike) async {
 
-
+    /*
     // This temporary method can be used to simulate the API call
     String jsonHike = jsonEncode(ratedHike.toJson());
     StandInAPI.postHikesNoAPI(jsonHike);
+    */
 
-/*
     // Post a review for a single hike to the API
     Uri hikeAPIUrl = Uri.parse('http://10.0.2.2:5000/review/${widget.userPreferences.username}');
     final response = await http.post(hikeAPIUrl, body: jsonEncode(ratedHike.toJson()));
@@ -80,7 +80,7 @@ class _HikesScreenState extends State<HikesScreen> with TickerProviderStateMixin
       print("Status code: "+ response.statusCode.toString());
       throw Exception('Failed to post hike to API');
     }
-*/
+
   }
 
   @override
