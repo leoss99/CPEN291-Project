@@ -14,21 +14,7 @@ class MatchesScreen extends StatefulWidget{
 
 class _MatchesScreenState extends State<MatchesScreen> {
 
-  /// Method for opening a hike url in a webview within the app
-  Future<void> launchHikeInWebView(String url) async {
-    if (await canLaunch(url)) {
-      await launch(
-        url,
-        forceSafariVC: true,
-        forceWebView: true,
-        enableJavaScript: true,
-      );
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  /// Method for opening a hike url in the user's external browser
+  /// Method for opening a hike url in the user's mobile browser
   void launchHikeInBrowser(String url) async =>
       await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
 

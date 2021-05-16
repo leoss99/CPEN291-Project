@@ -28,6 +28,7 @@ resource_fields = {
 class UserResource(Resource):
 	@marshal_with(resource_fields)
 	def get(self, username):
+		print("Getting! Username: " + username)
 		retval = [user for user in users if user.username == username]
 		if len(retval) == 0:
 			abort(404, message="Could not find a user with that username")
@@ -35,6 +36,8 @@ class UserResource(Resource):
 			return retval[0]
 
 	def post(self, username):
+		print("post received")
+		print("Username: " + username)
 		json_data = request.get_json(force=True)
 		json_data = json.loads(json_data)
 		retval = [user for user in users if user.username == username]

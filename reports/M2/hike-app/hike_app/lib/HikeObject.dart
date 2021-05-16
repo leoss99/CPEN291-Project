@@ -3,7 +3,7 @@
 class HikeObject {
 
   String hikeName; // Name of hike, such as garibaldi-lake-trail
-  String url; // TODO: Is this needed? URL is always the same with hike name appended
+  String url; // URL to AllTrails page of hike
   List<String> images; // URLs of images. If image is missing, URL is null
   bool isRated; // True if rated, else false
   bool isLiked; // True if liked, else false
@@ -61,6 +61,7 @@ class HikeObject {
   }
 }
 
+// Extensions for parsing hyphenated hike names and formatting for display
 extension CapExtension on String {
   String get inCaps => this.length > 0 ?'${this[0].toUpperCase()}${this.substring(1)}':'';
   String get splitAndCapitalize => this.split("-").map((str) => str.inCaps).join(" ");

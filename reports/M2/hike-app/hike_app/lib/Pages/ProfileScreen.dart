@@ -1,9 +1,7 @@
-import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_tags/flutter_tags.dart';
 import 'package:hiking_app/services/databaseservice.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hiking_app/StandInAPI.dart';
@@ -22,6 +20,7 @@ class ProfileScreen extends StatefulWidget{
 
 class _ProfileScreenState extends State<ProfileScreen> {
 
+  // Default profile image
   String photoURL = 'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg';
 
   @override
@@ -46,7 +45,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 150,
                         decoration: BoxDecoration(
                             color: Colors.red,
-                            //TODO: Make profile picture customizable
                             image: DecorationImage(
                                 image: NetworkImage(
                                     photoURL),
@@ -57,7 +55,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ])),
                     SizedBox(height: 15),
                     Text(
-                      // TODO: Allow user to change username, save username for sending to backend
                       FirebaseAuth.instance.currentUser.displayName,
                       style: TextStyle(
                           fontSize: 30.0,
@@ -72,27 +69,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // Spacer(flex: 2),
-                  // ElevatedButton.icon(
-                  //   onPressed: () async {
-                  //     await ImagePicker().getImage(source: ImageSource.gallery);
-                  //   },
-                  //   label:
-                  //   Text(
-                  //       "Change Pic"
-                  //   ),
-                  //   style: ElevatedButton.styleFrom(
-                  //       primary: Colors.green,
-                  //       onPrimary: Colors.white,
-                  //       shape: new RoundedRectangleBorder(
-                  //           borderRadius: new BorderRadius.circular(20.0)
-                  //       )
-                  //   ),
-                  //   icon: Icon(
-                  //     Icons.file_upload
-                  //   ),
-                  // ),
-                  // Spacer(),
                   ElevatedButton.icon(
                       onPressed: (){
                         FirebaseAuth.instance.signOut().then((value){
@@ -118,7 +94,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         )
                       ),
                   ),
-                  // Spacer(flex: 2),
                 ],
               ),
               Padding(
@@ -161,7 +136,7 @@ class ProfileSelector extends StatefulWidget {
 }
 
 class _ProfileSelectorState extends State<ProfileSelector> {
-  // Initialize selector sliders
+  // Initialize user preferences from Firebase
   DocumentReference userPrefs = FirebaseFirestore.instance.collection('userPreferences').doc(FirebaseAuth.instance.currentUser.uid);
 
   @override
@@ -176,7 +151,6 @@ class _ProfileSelectorState extends State<ProfileSelector> {
           return CircularProgressIndicator();
         }
         ProfileData userPreferences = ProfileData.fromSnapshot(snapshot.data.data());
-        //widget.userPreferences = userPreferences;
         return new Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -271,16 +245,6 @@ class _ProfileSelectorState extends State<ProfileSelector> {
                 },
               ),
             ),
-            SizedBox(height:10),
-            Text(
-              "Tags:",
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Montserrat'),
-            ),
-
           ],
         );
       },
@@ -327,30 +291,24 @@ class ProfileData {
 
   /// API post call to send user preferences to backend
   void postPreferences() async {
+
     // Temporary call to stand-in api
-    print("Username: " + this.username);
     StandInAPI.postPrefsNoAPI(jsonEncode(this.toJson()));
 
-    // print("Posting preferences to username: " + this.username);
-    //
-    // Uri postUri = Uri.parse('http://10.0.2.2:5000/user/taylor-mcouat');
-    //
-    // var params = {'length_min': '0', 'length_max': '1000', 'gain_min': '0', 'gain_max': '1000', 'easy': 'False', 'moderate': 'True', 'hard': 'False'};
-    // print(jsonEncode(params));
-    // var response = await http.post(postUri, body: jsonEncode(params));
-    // //var response = await http.post(postUri, body: this.toJson());
-    // if (response.statusCode == 409)
-    //   print("User already exists");
-    // if (response.statusCode == 202)
-    //   print("Success posting preferences");
-    //
-    // print("Status code: " + response.statusCode.toString());
-    
-    // testing
-    // Uri postUri = Uri.parse('http://10.0.2.2:5000/user/${this.username}');
-    // var response = await http.get(postUri);
-    // print("Status code: " + response.statusCode.toString());
-    // print("Response: " + response.body);
+
+    /*
+    // Post preferences to the backend to create a new user
+    Uri postUri = Uri.parse('http://10.0.2.2:5000/user/${this.username}');
+
+    var response = await http.post(postUri, body: jsonEncode(this.toJson()));
+
+    // Print status code for confirmation
+    print("Status code: " + response.statusCode.toString());
+    if (response.statusCode == 409)
+      print("User already exists");
+    if (response.statusCode == 202)
+      print("Success creating user");
+*/
   }
 
   ProfileData.fromSnapshot(Map<String, dynamic> snapshot){
