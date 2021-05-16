@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:hiking_app/HikeObject.dart';
-// import 'package:hiking_app/HikesScreen.dart';
-// import 'package:hiking_app/ProfileScreen.dart';
-// import 'package:hiking_app/MatchesScreen.dart';
-import 'signup.dart';
-import 'loginpage.dart';
-import 'homepage.dart';
+import 'Pages/selectprofilepicture.dart';
+import 'Pages/signup.dart';
+import 'Pages/loginpage.dart';
+import 'Pages/homepage.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async{
@@ -26,6 +23,7 @@ class HikeApp extends StatelessWidget{
         '/landingpage': (BuildContext context)=> new HikeApp(),
         '/signup': (BuildContext context) => new SignupPage(),
         '/homepage': (BuildContext context) => new HomePage(),
+        '/selectprofpic': (BuildContext context) => new SelectprofilepicPage(),
       },
     );
   }

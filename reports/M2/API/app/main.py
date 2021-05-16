@@ -6,7 +6,8 @@ from resources.review_resource import ReviewResource
 from models import hikes, Hike
 import pandas as pd
 
-#Reads the hike data from stats.csv and intitializes "hikes" that contains all of the hikes and associated informaiton
+#Reads the hike data from stats.csv and intitializes "hikes" that contains all of the hikes and associated informaiton.
+#Stores the information in global variable "hikes"
 def init_hike_list():
 	mydata = pd.read_csv("stats.csv", engine='python')
 	for i in range(len(mydata.ID)):
@@ -28,7 +29,6 @@ api.add_resource(HikeResource, "/hike/<string:username>")
 api.add_resource(UserResource, "/user/<string:username>")
 #Review resource for a user to leave a review
 api.add_resource(ReviewResource, "/review/<string:username>")
-
 
 #Model for how individual Hikes will be stored in the database.
 #Hikes can be queried by the unique id.
